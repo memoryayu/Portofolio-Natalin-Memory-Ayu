@@ -1,1725 +1,262 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>Portfolio — Natalin Memory Ayu</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-         :root {
-            --cream: #E8DEC9;
-            --wine: #701528;
-            --velvet: #45101D;
-            --gold: #EADFC2;
-            --line: #C79A45;
-            --head: 'Anton', 'Impact', 'Arial Narrow', sans-serif;
-            --body: 'Barlow', 'Segoe UI', system-ui, sans-serif;
-            --e: cubic-bezier(.16, 1, .3, 1);
-            --mw: 74rem;
-            --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .3 0 0 0 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
-            color-scheme: light
-        }
-        
-        @media(min-width:1600px) {
-             :root {
-                --mw: 88rem
-            }
-        }
-        
-        * {
-            box-sizing: border-box
-        }
-        
-        html,
-        body {
-            height: 100%;
-            height: 100dvh;
-            margin: 0;
-            overflow: hidden
-        }
-        
-        body {
-            background: var(--velvet);
-            font: 400 1rem/1.55 var(--body)
-        }
-        
-        button {
-            font: inherit;
-            color: inherit;
-            background: none;
-            border: 0;
-            cursor: pointer;
-            padding: 0
-        }
-        
-         :focus-visible {
-            outline: 3px solid var(--line);
-            outline-offset: 3px
-        }
-        
-        h3 {
-            margin: 0 0 .35rem;
-            font: 700 1.15rem/1.25 var(--body)
-        }
-        
-        p {
-            margin: 0
-        }
-        
-        img {
-            max-width: 100%
-        }
-        
-        .bar {
-            position: fixed;
-            top: calc(env(safe-area-inset-top, 0px) + .35rem);
-            left: 0;
-            right: 0;
-            z-index: 6;
-            display: flex;
-            gap: .3rem;
-            padding: 0 1rem
-        }
-        
-        .seg {
-            flex: 1;
-            height: .28rem;
-            border-radius: 9px;
-            background: rgba(128, 128, 128, .4);
-            overflow: hidden
-        }
-        
-        .seg i {
-            display: block;
-            height: 100%;
-            width: 0;
-            background: var(--line)
-        }
-        
-        .seg.done i {
-            width: 100%
-        }
-        
-        .seg.on i {
-            animation: fill var(--dur, 7s) linear forwards
-        }
-        
-        .paused .seg.on i {
-            animation-play-state: paused
-        }
-        
-        @keyframes fill {
-            to {
-                width: 100%
-            }
-        }
-        
-        .ctl {
-            position: fixed;
-            left: 50%;
-            transform: translateX(-50%);
-            bottom: calc(env(safe-area-inset-bottom, 0px) + .9rem);
-            z-index: 6;
-            display: flex;
-            align-items: center;
-            gap: .2rem;
-            background: var(--cream);
-            color: var(--wine);
-            border: 2px solid var(--wine);
-            border-radius: 99px;
-            padding: .2rem;
-            backdrop-filter: blur(6px);
-            box-shadow: 0 .4rem 1rem rgba(0, 0, 0, .3)
-        }
-        
-        .ctl button {
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            font-size: 1.05rem;
-            transition: transform .2s var(--e), background .2s
-        }
-        
-        .ctl button:hover {
-            background: rgba(112, 21, 40, .12)
-        }
-        
-        .ctl button:active {
-            transform: scale(.88)
-        }
-        
-        .ctl span {
-            font-size: .82rem;
-            font-weight: 700;
-            min-width: 3rem;
-            text-align: center
-        }
-        
-        .s {
-            position: absolute;
-            inset: 0;
-            overflow-y: auto;
-            display: flex;
-            align-items: flex-start;
-            opacity: 0;
-            visibility: hidden;
-            transform: scale(1.03);
-            filter: blur(6px);
-            transition: opacity .7s var(--e), transform .9s var(--e), filter .7s var(--e), visibility .7s
-        }
-        
-        .s.on {
-            opacity: 1;
-            visibility: visible;
-            transform: none;
-            filter: none
-        }
-        
-        .lt {
-            color: var(--wine);
-            background-color: var(--cream);
-            background-image: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, .5) 46%, transparent 62%), var(--noise);
-            background-size: 250% 100%, auto;
-            animation: sun 14s ease-in-out infinite alternate
-        }
-        
-        .dk {
-            color: var(--gold);
-            background-color: var(--velvet);
-            background-image: linear-gradient(115deg, transparent 35%, rgba(255, 200, 180, .09) 50%, transparent 65%), var(--noise);
-            background-size: 250% 100%, auto;
-            animation: sun 14s ease-in-out infinite alternate
-        }
-        
-        @keyframes sun {
-            to {
-                background-position: 100% 0, 0 0
-            }
-        }
-        
-        .in {
-            flex: 1;
-            position: relative;
-            width: 100%;
-            min-height: 100%;
-            max-width: var(--mw);
-            margin: 0 auto;
-            padding: 5.2rem 1.5rem 5.5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center
-        }
-        
-        .nv {
-            position: absolute;
-            z-index: 2;
-            top: calc(env(safe-area-inset-top, 0px) + 1.2rem);
-            left: 0;
-            right: 0;
-            height: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 max(1.5rem, calc((100% - var(--mw))/2 + 1.5rem));
-            font-size: .8rem;
-            font-weight: 500;
-            letter-spacing: .05em;
-            text-transform: uppercase
-        }
-        
-        .lt .nv {
-            background: var(--wine);
-            color: var(--cream)
-        }
-        
-        .dk .nv {
-            background: var(--cream);
-            color: var(--wine)
-        }
-        
-        .nv b {
-            text-decoration: underline;
-            text-underline-offset: .25em;
-            font-weight: 700
-        }
-        
-        .on .nv {
-            animation: dn .6s var(--e) both
-        }
-        
-        @keyframes dn {
-            from {
-                transform: translateY(-120%)
-            }
-        }
-        
-        .t {
-            font: 400 clamp(2.2rem, min(9vw, 12vh), 6.6rem)/.95 var(--head);
-            text-transform: uppercase;
-            letter-spacing: .01em;
-            margin: 0 0 1.2rem
-        }
-        
-        .lt .t {
-            text-shadow: .045em .045em 0 rgba(70, 50, 45, .35)
-        }
-        
-        .dk .t {
-            color: var(--gold);
-            text-shadow: .045em .045em 0 rgba(0, 0, 0, .5)
-        }
-        
-        .xl {
-            font-size: clamp(3.4rem, 16vw, 12rem);
-            margin: 0
-        }
-        
-        .sub {
-            font-size: .95rem;
-            opacity: .85
-        }
-        
-        .dash {
-            height: 2px;
-            width: min(12rem, 55%);
-            background: repeating-linear-gradient(90deg, currentColor 0 .6rem, transparent 0 1rem);
-            transform-origin: left;
-            margin: .4rem 0 1.6rem
-        }
-        
-        .sp {
-            display: flex;
-            gap: 1.2rem;
-            font-size: 1.3rem
-        }
-        
-        .sp i {
-            font-style: normal;
-            display: inline-block;
-            animation: tw 2.6s ease-in-out infinite
-        }
-        
-        .sp i:nth-child(2) {
-            animation-delay: .35s
-        }
-        
-        .sp i:nth-child(3) {
-            animation-delay: .7s
-        }
-        
-        .sp i:nth-child(4) {
-            animation-delay: 1.05s
-        }
-        
-        @keyframes tw {
-            50% {
-                transform: scale(.55) rotate(45deg);
-                opacity: .5
-            }
-        }
-        
-        .just {
-            text-align: justify;
-            hyphens: auto
-        }
-        
-        .a {
-            opacity: 0
-        }
-        
-        .on .a {
-            animation-duration: .85s;
-            animation-fill-mode: both;
-            animation-timing-function: var(--e);
-            animation-delay: calc(var(--i, 0)*.13s + .3s)
-        }
-        
-        .on .u {
-            animation-name: u
-        }
-        
-        .on .l {
-            animation-name: l
-        }
-        
-        .on .r {
-            animation-name: r
-        }
-        
-        .on .z {
-            animation-name: z
-        }
-        
-        .on .w {
-            animation-name: w;
-            animation-duration: 1s
-        }
-        
-        .on .x {
-            animation-name: x;
-            animation-duration: .9s
-        }
-        
-        .on .k {
-            animation-name: k;
-            animation-duration: 1.4s
-        }
-        
-        @keyframes u {
-            from {
-                opacity: 0;
-                transform: translateY(2.2rem)
-            }
-            to {
-                opacity: 1
-            }
-        }
-        
-        @keyframes l {
-            from {
-                opacity: 0;
-                transform: translateX(-3.5rem)
-            }
-            to {
-                opacity: 1
-            }
-        }
-        
-        @keyframes r {
-            from {
-                opacity: 0;
-                transform: translateX(3.5rem)
-            }
-            to {
-                opacity: 1
-            }
-        }
-        
-        @keyframes z {
-            from {
-                opacity: 0;
-                transform: scale(.7) rotate(calc(var(--r, 0deg) - 8deg))
-            }
-            to {
-                opacity: 1;
-                transform: rotate(var(--r, 0deg))
-            }
-        }
-        
-        @keyframes w {
-            from {
-                opacity: 1;
-                clip-path: inset(-.3em 100% -.3em 0)
-            }
-            to {
-                opacity: 1;
-                clip-path: inset(-.3em -.3em -.3em 0)
-            }
-        }
-        
-        @keyframes x {
-            from {
-                opacity: 1;
-                transform: scaleX(0)
-            }
-            to {
-                opacity: 1
-            }
-        }
-        
-        @keyframes k {
-            from {
-                opacity: 0;
-                letter-spacing: 1.4em
-            }
-            to {
-                opacity: 1;
-                letter-spacing: .5em
-            }
-        }
-        
-        @keyframes pop {
-            from {
-                opacity: 0;
-                transform: scale(.6) translateY(.7rem)
-            }
-            to {
-                opacity: 1
-            }
-        }
-        
-        @keyframes kb {
-            to {
-                transform: scale(1.09)
-            }
-        }
-        
-        .z {
-            transform: rotate(var(--r, 0deg))
-        }
-        
-        .ph {
-            background: #D6C9AE;
-            fill: #A8977A
-        }
-        
-        .ph svg {
-            display: block;
-            width: 100%;
-            height: 100%
-        }
-        
-        .ph img {
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: cover
-        }
-        
-        .pic {
-            padding: .35rem;
-            background: #F3ECDC;
-            box-shadow: 0 .5rem 1.2rem rgba(0, 0, 0, .28)
-        }
-        
-        .pic.ph {
-            background: #F3ECDC
-        }
-        
-        .pic img {
-            aspect-ratio: 4/3;
-            height: auto
-        }
-        /* tag, chip, bullet: muncul bertahap */
-        
-        .tags span,
-        .chips span,
-        .bul li {
-            opacity: 0
-        }
-        
-        .on .tags span,
-        .on .chips span {
-            animation: pop .55s var(--e) both;
-            animation-delay: calc(.7s + var(--k, 0)*.05s)
-        }
-        
-        .on .bul li {
-            animation: u .7s var(--e) both;
-            animation-delay: calc(.6s + var(--k, 0)*.12s)
-        }
-        
-        .on .kq-img img,
-        .on .about-photo img {
-            animation: kb 9s ease-in-out infinite alternate
-        }
-        /* cover */
-        
-        .cut {
-            background: none;
-            fill: #B59E78;
-            position: absolute;
-            left: 50%;
-            bottom: 3.6rem;
-            width: min(22rem, 60vw);
-            margin-left: calc(min(22rem, 60vw)/-2);
-            z-index: 1
-        }
-        
-        .cut::after {
-            content: "";
-            position: absolute;
-            left: 50%;
-            bottom: -1.4rem;
-            width: 170%;
-            height: 6rem;
-            transform: translateX(-50%);
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 100' preserveAspectRatio='none'%3E%3Cpath fill='%23C79A45' d='M0 45Q50 5 100 45T200 45T300 45T400 45T500 45T600 45V100H0Z'/%3E%3Cpath fill='%23701528' d='M0 68Q50 33 100 68T200 68T300 68T400 68T500 68T600 68V100H0Z'/%3E%3C/svg%3E") center/100% 100% no-repeat;
-            pointer-events: none
-        }
-        
-        .cut img {
-            display: block;
-            width: auto;
-            height: auto;
-            max-width: 100%;
-            max-height: min(60vh, 28rem);
-            margin: 0 auto;
-            object-fit: contain;
-            filter: drop-shadow(0 0 1px #701528) drop-shadow(0 0 1px #701528) drop-shadow(0 .8rem 1.2rem rgba(0, 0, 0, .4));
-            -webkit-mask-image: linear-gradient(to bottom, #000 85%, transparent 100%);
-            mask-image: linear-gradient(to bottom, #000 85%, transparent 100%)
-        }
-        
-        .k1 {
-            font: 400 clamp(1.1rem, 3.4vw, 2.2rem) var(--head);
-            letter-spacing: .5em;
-            text-align: center;
-            margin: 0 0 .3rem;
-            padding-left: .5em
-        }
-        
-        .cv h1 {
-            text-align: center
-        }
-        
-        .cvb {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            gap: 1rem;
-            margin-top: clamp(7rem, 30vh, 15rem);
-            position: relative;
-            z-index: 2
-        }
-        
-        .cvb .t {
-            font-size: clamp(1.3rem, 3.4vw, 2.4rem);
-            margin: 0
-        }
-        
-        .nm {
-            text-align: right
-        }
-        
-        .nm .dash {
-            margin: .4rem 0 .5rem auto
-        }
-        /* about */
-        
-        .about-grid {
-            display: grid;
-            gap: 1.6rem;
-            align-items: center
-        }
-        
-        @media(min-width:800px) {
-            .about-grid {
-                grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
-                gap: 3rem
-            }
-        }
-        
-        .about-photo {
-            width: 100%;
-            max-width: 18rem;
-            aspect-ratio: 4/5;
-            background: #5A2230;
-            justify-self: center
-        }
-        
-        .about-photo img {
-            border: .35rem solid #F3ECDC;
-            box-shadow: 0 .8rem 1.4rem rgba(0, 0, 0, .4);
-            object-position: center top
-        }
-        
-        .about {
-            font-size: clamp(.95rem, .9rem + .5vw, 1.15rem);
-            line-height: 1.65
-        }
-        
-        .chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: .4rem;
-            margin-top: .45rem
-        }
-        
-        .chips span {
-            border: 1.5px solid var(--line);
-            border-radius: 99px;
-            padding: .15rem .8rem;
-            font-size: .9rem
-        }
-        /* education (FIX: angka IPK tidak terpotong) */
-        
-        .ed-grid {
-            display: grid;
-            gap: 2rem;
-            align-items: center;
-            padding-bottom: .5rem
-        }
-        
-        @media(min-width:900px) {
-            .ed-grid {
-                grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
-                gap: 3.5rem
-            }
-        }
-        
-        .ed-lbl {
-            font-weight: 700;
-            font-size: 1.15rem;
-            color: var(--line);
-            margin-bottom: .3rem
-        }
-        
-        .ed-num {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: baseline;
-            gap: 0 .08em;
-            font-size: clamp(5.5rem, min(24vw, 38vh), 14rem);
-            padding: .1em .12em .14em 0
-        }
-        
-        .ed-num b {
-            font: 400 1em/.95 var(--head);
-            display: inline-block;
-            padding-bottom: .04em;
-            font-variant-numeric: tabular-nums;
-            color: var(--line);
-            text-shadow: .04em .04em 0 rgba(0, 0, 0, .5)
-        }
-        
-        .ed-num span {
-            font: 400 .22em/1 var(--head);
-            opacity: .85
-        }
-        
-        .ed-cap {
-            max-width: 22rem;
-            font-size: 1.1rem;
-            line-height: 1.45;
-            margin: 1.1rem 0 1.2rem
-        }
-        
-        .ed-uni {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.4rem
-        }
-        
-        .ed-logo {
-            flex: none;
-            width: clamp(3.5rem, 8vw, 5rem);
-            height: auto;
-            background: var(--cream);
-            border-radius: 50%;
-            padding: .4rem
-        }
-        
-        .ed-uni h2 {
-            margin: 0;
-            font: 600 clamp(1.25rem, 3vw, 1.9rem)/1.15 var(--body)
-        }
-        
-        .ed-uni p {
-            margin-top: .25rem;
-            opacity: .9
-        }
-        
-        .ed-meta {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: .8rem;
-            margin-bottom: 1.1rem
-        }
-        
-        .ed-meta div {
-            border-left: 4px solid var(--line);
-            padding: .2rem 0 .2rem .9rem
-        }
-        
-        .ed-meta small {
-            display: block;
-            font-weight: 700;
-            font-size: .85rem;
-            letter-spacing: .06em;
-            text-transform: uppercase;
-            color: var(--line)
-        }
-        
-        .ed-meta b {
-            display: block;
-            font: 400 clamp(1.3rem, 3vw, 1.8rem)/1.15 var(--head);
-            letter-spacing: .03em;
-            text-transform: uppercase
-        }
-        
-        @media(max-width:420px) {
-            .ed-meta {
-                grid-template-columns: 1fr
-            }
-        }
-        
-        .ed-card {
-            border: 2px solid var(--line);
-            border-radius: .6rem;
-            padding: 1.1rem 1.3rem;
-            background: rgba(0, 0, 0, .18);
-            margin-bottom: 1.1rem
-        }
-        
-        .ed-card small {
-            display: block;
-            font-weight: 700;
-            font-size: .9rem;
-            color: var(--line);
-            margin-bottom: .35rem
-        }
-        
-        .ed-card p {
-            font-size: 1.02rem;
-            line-height: 1.5
-        }
-        
-        .ed-badge {
-            display: flex;
-            align-items: center;
-            gap: .8rem;
-            background: var(--line);
-            color: var(--velvet);
-            font-weight: 700;
-            line-height: 1.3;
-            border-radius: .6rem;
-            padding: .8rem 1.1rem
-        }
-        
-        .ed-badge i {
-            font-style: normal;
-            font-size: 1.4rem
-        }
-        /* skills */
-        
-        .sk-grid {
-            display: grid;
-            gap: 1.4rem;
-            margin-top: 1.4rem
-        }
-        
-        @media(min-width:900px) {
-            .sk-grid {
-                grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr)
-            }
-            .sk-main {
-                grid-row: span 2
-            }
-        }
-        
-        .sk-card {
-            border: 3px solid var(--wine);
-            border-radius: .6rem;
-            background: rgba(255, 255, 255, .35);
-            padding: 1.2rem 1.3rem;
-            box-shadow: .4rem .4rem 0 var(--wine)
-        }
-        
-        .sk-card h3 {
-            font: 400 clamp(1.5rem, 3vw, 2rem)/1 var(--head);
-            text-transform: uppercase;
-            letter-spacing: .02em;
-            margin: 0 0 .95rem
-        }
-        
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: .5rem
-        }
-        
-        .tags span {
-            border: 2px solid var(--wine);
-            border-radius: 99px;
-            padding: .3rem .95rem;
-            font-weight: 600;
-            font-size: .95rem;
-            line-height: 1.3;
-            transition: transform .25s var(--e)
-        }
-        
-        .tags span:hover {
-            transform: translateY(-2px) scale(1.05)
-        }
-        
-        .dk .tags span {
-            border-color: var(--line)
-        }
-        
-        .sk-main .tags span {
-            background: var(--wine);
-            color: var(--cream);
-            font-size: 1.05rem;
-            padding: .45rem 1.1rem
-        }
-        
-        .sk-tools .tags span {
-            font-size: .9rem;
-            padding: .25rem .8rem
-        }
-        
-        .sk-card,
-        .al-card,
-        .kp-card,
-        .ed-card {
-            transition: transform .35s var(--e), box-shadow .35s var(--e), background .35s
-        }
-        
-        .sk-card:hover,
-        .al-card:hover {
-            transform: translate(-3px, -5px);
-            box-shadow: .7rem .7rem 0 var(--wine)
-        }
-        
-        .kp-card:hover,
-        .ed-card:hover {
-            transform: translateY(-4px);
-            background: rgba(0, 0, 0, .34)
-        }
-        /* kerja praktek */
-        
-        .kp-head,
-        .al-head {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: .6rem 2rem
-        }
-        
-        .kp-head .t {
-            font-size: clamp(2.2rem, min(8vw, 10vh), 5.6rem)
-        }
-        
-        .kp-org {
-            text-align: right;
-            padding-bottom: .5rem
-        }
-        
-        .kp-org h3 {
-            font-size: clamp(1.1rem, 2.4vw, 1.6rem);
-            margin: 0
-        }
-        
-        .kp-org p {
-            opacity: .85
-        }
-        
-        .kp-main {
-            display: grid;
-            gap: 1.6rem;
-            align-items: center;
-            margin-top: .4rem
-        }
-        
-        @media(min-width:800px) {
-            .kp-main {
-                grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr);
-                gap: 3rem
-            }
-        }
-        
-        .kp-cert {
-            justify-self: center;
-            padding: .5rem;
-            background: #F8F2E4;
-            border: 2px solid var(--line);
-            outline: 3px solid var(--wine);
-            outline-offset: 3px;
-            box-shadow: .6rem .6rem 0 rgba(0, 0, 0, .4)
-        }
-        
-        .kp-cert img {
-            display: block;
-            width: auto;
-            max-width: 100%;
-            max-height: min(42vh, 22rem)
-        }
-        
-        .kp-list {
-            display: grid;
-            gap: .9rem
-        }
-        
-        @media(min-width:700px) {
-            .kp-list {
-                grid-template-columns: 1fr 1fr
-            }
-        }
-        
-        .kp-card {
-            display: flex;
-            gap: .9rem;
-            align-items: flex-start;
-            background: rgba(0, 0, 0, .25);
-            border: 2px solid var(--line);
-            border-radius: .6rem;
-            padding: .9rem 1rem
-        }
-        
-        .kp-card b {
-            flex: none;
-            font: 400 2.4rem/.9 var(--head);
-            color: var(--line);
-            text-shadow: .05em .05em 0 rgba(0, 0, 0, .5)
-        }
-        
-        .kp-card p {
-            font-size: .95rem;
-            line-height: 1.45
-        }
-        /* scrapbook */
-        
-        .kq-photos {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.4rem;
-            margin: 1.6rem 0 5.5rem;
-            padding: .6rem .6rem 0
-        }
-        
-        @media(min-width:800px) {
-            .kq-photos {
-                grid-template-columns: 1.35fr 1fr 1fr 1.2fr;
-                gap: 0;
-                align-items: center
-            }
-            .kq-photos .kq+.kq {
-                margin-left: -1.6rem
-            }
-            .kq-photos .kq:nth-child(2) {
-                translate: 0 .9rem
-            }
-            .kq-photos .kq:nth-child(3) {
-                translate: 0 -.5rem
-            }
-            .kq-photos .kq:nth-child(4) {
-                translate: 0 .6rem
-            }
-        }
-        
-        .kq {
-            position: relative;
-            margin: 0;
-            padding: .45rem .45rem 1.6rem;
-            background: #F8F2E4;
-            box-shadow: 0 .7rem 1.4rem rgba(0, 0, 0, .5);
-            transition: scale .3s var(--e), translate .3s var(--e)
-        }
-        
-        .kq:hover {
-            scale: 1.08;
-            z-index: 5
-        }
-        
-        .kq::before {
-            content: "";
-            position: absolute;
-            top: -.65rem;
-            left: 50%;
-            width: 3.8rem;
-            height: 1.3rem;
-            margin-left: -1.9rem;
-            transform: rotate(-4deg);
-            background: rgba(199, 154, 69, .85);
-            box-shadow: 0 .1rem .3rem rgba(0, 0, 0, .3);
-            z-index: 2
-        }
-        
-        .kq-img {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 4/3;
-            overflow: hidden;
-            background: #CFC3AB
-        }
-        
-        .kq-img img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center 60%;
-            filter: sepia(.1) contrast(1.05)
-        }
-        
-        .kq-star {
-            position: absolute;
-            right: -.7rem;
-            bottom: -.7rem;
-            width: 2.2rem;
-            height: 2.2rem;
-            display: grid;
-            place-items: center;
-            border-radius: 50%;
-            background: var(--wine);
-            color: var(--gold);
-            border: 2px solid var(--line);
-            font-style: normal;
-            font-size: 1rem;
-            z-index: 3
-        }
-        /* asisten lab */
-        
-        .al-head .t {
-            font-size: clamp(2.2rem, min(7vw, 10vh), 5.2rem)
-        }
-        
-        .al-desc {
-            max-width: 24rem;
-            font-size: .98rem;
-            line-height: 1.5;
-            padding-bottom: .5rem;
-            text-align: right
-        }
-        
-        .al-cards {
-            display: grid;
-            gap: 1.1rem;
-            margin: .4rem 0 0
-        }
-        
-        @media(min-width:800px) {
-            .al-cards {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 1.4rem
-            }
-        }
-        
-        .al-card {
-            display: flex;
-            flex-direction: column;
-            border: 3px solid var(--wine);
-            border-radius: .6rem;
-            background: rgba(255, 255, 255, .4);
-            padding: .9rem 1.2rem 1.1rem;
-            box-shadow: .45rem .45rem 0 var(--wine)
-        }
-        
-        .al-top {
-            display: flex;
-            align-items: baseline
-        }
-        
-        .al-card b {
-            font: 400 clamp(3rem, min(8vw, 11vh), 4.6rem)/.9 var(--head);
-            color: var(--line);
-            text-shadow: .04em .04em 0 var(--wine)
-        }
-        
-        .al-card small {
-            margin: 0 .5rem;
-            font-weight: 700;
-            letter-spacing: .12em;
-            text-transform: uppercase
-        }
-        
-        .al-card h3 {
-            margin: .5rem 0 .9rem;
-            font-size: 1.05rem;
-            line-height: 1.3
-        }
-        
-        .al-sk {
-            margin-top: auto;
-            align-self: flex-start;
-            display: inline-flex;
-            align-items: center;
-            gap: .5rem;
-            padding: .45rem 1rem;
-            border-radius: 99px;
-            background: var(--wine);
-            color: var(--cream);
-            font-weight: 700;
-            font-size: .92rem;
-            text-decoration: none;
-            transition: transform .25s var(--e), background .25s
-        }
-        
-        .al-sk:hover {
-            background: var(--line);
-            color: var(--velvet);
-            transform: translateY(-2px)
-        }
-        
-        .al-bottom {
-            display: grid;
-            gap: 1.8rem;
-            align-items: center;
-            margin: 2rem 0 4.5rem
-        }
-        
-        @media(min-width:800px) {
-            .al-bottom {
-                grid-template-columns: auto minmax(0, 1fr);
-                gap: 2.6rem
-            }
-        }
-        
-        .al-cert {
-            justify-self: center;
-            padding: .5rem;
-            background: #F8F2E4;
-            border: 2px solid var(--wine);
-            outline: 3px solid var(--line);
-            outline-offset: 3px;
-            box-shadow: .6rem .6rem 0 rgba(70, 16, 29, .45)
-        }
-        
-        .al-cert img {
-            display: block;
-            width: auto;
-            max-width: 100%;
-            max-height: min(26vh, 13rem)
-        }
-        
-        .al-photos {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.4rem;
-            padding: .6rem .6rem 0
-        }
-        
-        @media(min-width:800px) {
-            .al-photos {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 0;
-                align-items: center
-            }
-        }
-        
-        .al-photos .kq+.kq {
-            margin-left: -1rem
-        }
-        
-        .al-photos .kq {
-            box-shadow: 0 .7rem 1.4rem rgba(70, 16, 29, .4)
-        }
-        
-        .al-photos .kq-img img {
-            object-position: center 40%
-        }
-        /* pelatihan */
-        
-        .xp-grid {
-            display: grid;
-            gap: 2rem;
-            align-items: center
-        }
-        
-        @media(min-width:850px) {
-            .xp-grid {
-                grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
-                gap: 3rem
-            }
-        }
-        
-        .xp-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: .45rem
-        }
-        
-        .xp-meta span {
-            border: 1.5px solid var(--line);
-            border-radius: 99px;
-            padding: .2rem .8rem;
-            font-size: .88rem;
-            font-weight: 600;
-            background: rgba(0, 0, 0, .18)
-        }
-        
-        .collage {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            align-items: start;
-            padding: .4rem
-        }
-        
-        .collage .pic img {
-            width: 100%;
-            object-fit: cover
-        }
-        
-        .cert-frame {
-            grid-column: 1/-1;
-            justify-self: center;
-            padding: .5rem;
-            background: #F8F2E4;
-            border: 2px solid var(--line);
-            outline: 3px solid var(--wine);
-            outline-offset: 3px;
-            box-shadow: .5rem .5rem 0 rgba(0, 0, 0, .4)
-        }
-        
-        .cert-frame img {
-            display: block;
-            width: auto;
-            max-width: 100%;
-            max-height: min(30vh, 14rem)
-        }
-        /* proyek */
-        
-        .cols {
-            display: grid;
-            gap: 1.6rem
-        }
-        
-        @media(min-width:800px) {
-            .cols {
-                grid-template-columns: 1fr 1fr;
-                gap: 3rem
-            }
-        }
-        
-        .bul {
-            margin: 0;
-            padding: 0;
-            list-style: none
-        }
-        
-        .bul li {
-            position: relative;
-            padding-left: 1.1rem;
-            margin-bottom: .6rem;
-            font-size: .98rem;
-            line-height: 1.45
-        }
-        
-        .bul li::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: .6em;
-            width: .4rem;
-            height: .4rem;
-            border-radius: 50%;
-            background: currentColor
-        }
-        /* piagam */
-        
-        .pg-head {
-            display: flex;
-            align-items: center;
-            gap: 1.2rem 1.5rem;
-            flex-wrap: wrap;
-            margin-bottom: .4rem
-        }
-        
-        .pg-head .t {
-            margin: 0
-        }
-        
-        .pg-badge {
-            border: 2px solid var(--wine);
-            border-radius: 99px;
-            padding: .3rem 1rem;
-            font-weight: 700;
-            font-size: .9rem;
-            letter-spacing: .04em;
-            text-transform: uppercase;
-            background: rgba(112, 21, 40, .08)
-        }
-        
-        .pg-wrap {
-            display: grid;
-            gap: 1.6rem;
-            align-items: center;
-            margin-top: 1rem
-        }
-        
-        @media(min-width:850px) {
-            .pg-wrap {
-                grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-                gap: 2.6rem
-            }
-        }
-        
-        .pg-stage {
-            margin: 0;
-            justify-self: center;
-            width: 100%;
-            padding: .6rem .6rem .5rem;
-            background: #F8F2E4;
-            border: 3px solid var(--wine);
-            outline: 3px solid var(--line);
-            outline-offset: 4px;
-            box-shadow: .6rem .6rem 0 rgba(70, 16, 29, .4)
-        }
-        
-        .pg-frame {
-            height: min(46vh, 24rem);
-            display: grid;
-            place-items: center;
-            background: #EFE6D2;
-            overflow: hidden
-        }
-        
-        .pg-frame img {
-            display: block;
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            transition: opacity .35s
-        }
-        
-        .pg-frame img.fade {
-            opacity: 0
-        }
-        
-        .pg-cap {
-            text-align: center;
-            margin-top: .55rem;
-            font: 400 1.15rem/1.1 var(--head);
-            letter-spacing: .05em;
-            text-transform: uppercase
-        }
-        
-        .pg-cap small {
-            display: block;
-            font: 600 .8rem var(--body);
-            letter-spacing: .05em;
-            opacity: .75;
-            margin-top: .2rem
-        }
-        
-        .pg-thumbs {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: .8rem
-        }
-        
-        .pg-th {
-            position: relative;
-            padding: .3rem .3rem 1.5rem;
-            background: #F8F2E4;
-            border: 2px solid var(--wine);
-            border-radius: .3rem;
-            box-shadow: .25rem .25rem 0 rgba(70, 16, 29, .35);
-            transition: transform .25s var(--e), box-shadow .25s
-        }
-        
-        .pg-th:hover {
-            transform: translateY(-3px)
-        }
-        
-        .pg-th img {
-            display: block;
-            width: 100%;
-            aspect-ratio: 4/3;
-            object-fit: cover;
-            background: #CFC3AB
-        }
-        
-        .pg-th span {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: .3rem;
-            text-align: center;
-            font: 400 .9rem/1 var(--head);
-            letter-spacing: .06em;
-            text-transform: uppercase
-        }
-        
-        .pg-th.on {
-            background: var(--wine);
-            color: var(--cream);
-            transform: translateY(-3px);
-            box-shadow: .25rem .25rem 0 var(--line)
-        }
-        
-        .cert-note {
-            margin-top: 1.4rem;
-            font-size: .9rem;
-            font-style: italic;
-            opacity: .85;
-            max-width: 46rem
-        }
-        /* lulusan terbaik */
-        
-        .gr-sub {
-            font-size: clamp(1rem, 2.2vw, 1.35rem);
-            font-weight: 600
-        }
-        
-        .gr-sub b {
-            color: var(--line)
-        }
-        
-        .gr-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 2.8rem 3.5rem;
-            margin-top: 1.4rem
-        }
-        
-        .gr-cert {
-            position: relative;
-            min-width: 0;
-            max-width: 100%;
-            padding: .8rem;
-            background: #F8F2E4;
-            border: 3px solid var(--line);
-            outline: 3px solid var(--wine);
-            outline-offset: 5px;
-            box-shadow: .8rem .8rem 0 rgba(0, 0, 0, .45)
-        }
-        
-        .gr-cert img {
-            display: block;
-            width: auto;
-            height: auto;
-            max-width: 100%;
-            max-height: min(54vh, 30rem)
-        }
-        
-        .gr-seal {
-            position: absolute;
-            top: -1.8rem;
-            right: -1.4rem;
-            width: 6rem;
-            height: 6rem;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            text-align: center;
-            background: var(--line);
-            color: var(--velvet);
-            border: 3px dashed var(--velvet);
-            font: 400 1.05rem/1.05 var(--head);
-            text-transform: uppercase;
-            transform: rotate(12deg);
-            box-shadow: 0 .4rem .8rem rgba(0, 0, 0, .4);
-            z-index: 3
-        }
-        
-        .gr-photo {
-            position: relative;
-            min-width: 12rem;
-            max-width: 100%;
-            margin: 0;
-            padding: .7rem .7rem 3rem;
-            background: #F8F2E4;
-            box-shadow: 0 1rem 1.8rem rgba(0, 0, 0, .5)
-        }
-        
-        .gr-photo::before {
-            content: "";
-            position: absolute;
-            top: -.8rem;
-            left: 50%;
-            width: 4.6rem;
-            height: 1.5rem;
-            margin-left: -2.3rem;
-            transform: rotate(-4deg);
-            background: rgba(199, 154, 69, .85);
-            box-shadow: 0 .1rem .3rem rgba(0, 0, 0, .3);
-            z-index: 2
-        }
-        
-        .gr-photo img {
-            display: block;
-            width: auto;
-            height: auto;
-            max-width: 100%;
-            max-height: min(52vh, 28rem);
-            margin: 0 auto
-        }
-        
-        .gr-photo figcaption {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: .8rem;
-            text-align: center;
-            color: var(--wine);
-            font: 400 1.3rem/1 var(--head);
-            letter-spacing: .08em;
-            text-transform: uppercase
-        }
-        /* kontak */
-        
-        .ct {
-            display: grid;
-            grid-template-columns: auto minmax(0, 1fr);
-            gap: 1.2rem 2rem;
-            align-items: center;
-            position: relative
-        }
-        
-        .ci {
-            list-style: none;
-            margin: 0 0 .8rem;
-            padding: 0;
-            display: grid;
-            gap: 1.1rem
-        }
-        
-        .ci li {
-            display: flex;
-            align-items: center;
-            gap: .8rem;
-            font-weight: 500;
-            font-size: 1.1rem
-        }
-        
-        .ci a {
-            color: inherit;
-            text-decoration: none;
-            word-break: break-all
-        }
-        
-        .ci a:hover {
-            text-decoration: underline
-        }
-        
-        .ic {
-            flex: none;
-            width: 2.2rem;
-            height: 2.2rem;
-            border-radius: 50%;
-            background: var(--wine);
-            color: var(--cream);
-            display: grid;
-            place-items: center;
-            font-size: .95rem;
-            font-weight: 700
-        }
-        
-        .again {
-            margin-top: 1.4rem;
-            border: 2px solid var(--wine);
-            border-radius: .6rem;
-            padding: .55rem 1.1rem;
-            font-weight: 600;
-            transition: background .25s, color .25s
-        }
-        
-        .again:hover {
-            background: var(--wine);
-            color: var(--cream)
-        }
-        
-        .ct .ph {
-            position: static;
-            justify-self: center;
-            align-self: center;
-            width: min(20rem, 38vw);
-            aspect-ratio: 5/6;
-            background: none;
-            fill: #B59E78;
-            filter: drop-shadow(0 .6rem 1rem rgba(0, 0, 0, .25))
-        }
-        /* unduh */
-        
-        .dlrow {
-            display: flex;
-            flex-wrap: wrap;
-            gap: .6rem;
-            margin-top: 1.4rem
-        }
-        
-        .dlrow .again {
-            margin-top: 0
-        }
-        
-        .again.pri {
-            background: var(--wine);
-            color: var(--cream)
-        }
-        
-        .again.pri:hover {
-            background: var(--line);
-            color: var(--velvet);
-            border-color: var(--line)
-        }
-        
-        .again:disabled {
-            opacity: .6;
-            cursor: wait
-        }
-        
-        .dlmsg {
-            margin-top: .6rem;
-            font-size: .88rem;
-            font-weight: 600;
-            max-width: 30rem;
-            min-height: 1.2em
-        }
-        /* sampul dan kontak: muat satu layar tanpa scroll */
-        
-        .cv .xl {
-            font-size: clamp(3rem, min(16vw, 21vh), 12rem)
-        }
-        
-        .cvdl {
-            position: absolute;
-            left: 1.5rem;
-            bottom: 11rem;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: .4rem;
-            margin: 0;
-            z-index: 3
-        }
-        
-        .cv .cvdl .again {
-            font-size: .75rem;
-            padding: .3rem .75rem;
-            border-width: 1.5px;
-            border-radius: .5rem
-        }
-        
-        .cvdl .dlmsg {
-            font-size: .72rem;
-            max-width: 13rem;
-            margin: .2rem 0 0;
-            text-align: left
-        }
-        
-        .dlmsg:empty {
-            display: none
-        }
-        
-        .cvb {
-            margin-top: clamp(4rem, 22vh, 15rem)
-        }
-        
-        .cut img {
-            max-height: min(60vh, 28rem)
-        }
-        
-        @media(max-width:700px) {
-            .cvdl {
-                position: static;
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-                margin-top: .6rem
-            }
-            .cvdl .dlmsg {
-                width: 100%;
-                max-width: none;
-                text-align: center
-            }
-        }
-        
-        .cs .xl {
-            font-size: clamp(3rem, min(15vw, 18vh), 11rem)!important
-        }
-        
-        .cs .ci {
-            gap: .8rem
-        }
-        
-        @media(max-width:600px) {
-            .cv .cvdl .again {
-                font-size: .8rem;
-                padding: .45rem .8rem
-            }
-        }
-        /* cetak / simpan PDF: satu slide per halaman */
-        
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portfolio — Natalin Memory Ayu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#E8DEC9;--wine:#701528;--velvet:#45101D;--gold:#EADFC2;--line:#C79A45;--head:'Anton','Impact','Arial Narrow',sans-serif;--body:'Barlow','Segoe UI',system-ui,sans-serif;--e:cubic-bezier(.16,1,.3,1);--mw:74rem;--noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .3 0 0 0 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");color-scheme:light}
+@media(min-width:1600px){:root{--mw:88rem}}
+*{box-sizing:border-box}
+html,body{height:100%;height:100dvh;margin:0;overflow:hidden}
+body{background:var(--velvet);font:400 1rem/1.55 var(--body)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+:focus-visible{outline:3px solid var(--line);outline-offset:3px}
+h3{margin:0 0 .35rem;font:700 1.15rem/1.25 var(--body)}
+p{margin:0}
+img{max-width:100%}
+.bar{position:fixed;top:calc(env(safe-area-inset-top,0px) + .35rem);left:0;right:0;z-index:6;display:flex;gap:.3rem;padding:0 1rem}
+.seg{flex:1;height:.28rem;border-radius:9px;background:rgba(128,128,128,.4);overflow:hidden}
+.seg i{display:block;height:100%;width:0;background:var(--line)}
+.seg.done i{width:100%}
+.seg.on i{animation:fill var(--dur,7s) linear forwards}
+.paused .seg.on i{animation-play-state:paused}
+@keyframes fill{to{width:100%}}
+.ctl{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + .9rem);z-index:6;display:flex;align-items:center;gap:.2rem;background:var(--cream);color:var(--wine);border:2px solid var(--wine);border-radius:99px;padding:.2rem;backdrop-filter:blur(6px);box-shadow:0 .4rem 1rem rgba(0,0,0,.3)}
+.ctl button{width:2.5rem;height:2.5rem;border-radius:50%;font-size:1.05rem;transition:transform .2s var(--e),background .2s}
+.ctl button:hover{background:rgba(112,21,40,.12)}
+.ctl button:active{transform:scale(.88)}
+.ctl span{font-size:.82rem;font-weight:700;min-width:3rem;text-align:center}
+.s{position:absolute;inset:0;overflow-y:auto;display:flex;align-items:flex-start;opacity:0;visibility:hidden;transform:scale(1.03);filter:blur(6px);transition:opacity .7s var(--e),transform .9s var(--e),filter .7s var(--e),visibility .7s}
+.s.on{opacity:1;visibility:visible;transform:none;filter:none}
+.lt{color:var(--wine);background-color:var(--cream);background-image:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.5) 46%,transparent 62%),var(--noise);background-size:250% 100%,auto;animation:sun 14s ease-in-out infinite alternate}
+.dk{color:var(--gold);background-color:var(--velvet);background-image:linear-gradient(115deg,transparent 35%,rgba(255,200,180,.09) 50%,transparent 65%),var(--noise);background-size:250% 100%,auto;animation:sun 14s ease-in-out infinite alternate}
+@keyframes sun{to{background-position:100% 0,0 0}}
+.in{flex:1;position:relative;width:100%;min-height:100%;max-width:var(--mw);margin:0 auto;padding:5.2rem 1.5rem 5.5rem;display:flex;flex-direction:column;justify-content:center}
+.nv{position:absolute;z-index:2;top:calc(env(safe-area-inset-top,0px) + 1.2rem);left:0;right:0;height:2rem;display:flex;align-items:center;justify-content:space-between;padding:0 max(1.5rem,calc((100% - var(--mw))/2 + 1.5rem));font-size:.8rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase}
+.lt .nv{background:var(--wine);color:var(--cream)}
+.dk .nv{background:var(--cream);color:var(--wine)}
+.nv b{text-decoration:underline;text-underline-offset:.25em;font-weight:700}
+.on .nv{animation:dn .6s var(--e) both}
+@keyframes dn{from{transform:translateY(-120%)}}
+.t{font:400 clamp(2.2rem,min(9vw,12vh),6.6rem)/.95 var(--head);text-transform:uppercase;letter-spacing:.01em;margin:0 0 1.2rem}
+.lt .t{text-shadow:.045em .045em 0 rgba(70,50,45,.35)}
+.dk .t{color:var(--gold);text-shadow:.045em .045em 0 rgba(0,0,0,.5)}
+.xl{font-size:clamp(3.4rem,16vw,12rem);margin:0}
+.sub{font-size:.95rem;opacity:.85}
+.dash{height:2px;width:min(12rem,55%);background:repeating-linear-gradient(90deg,currentColor 0 .6rem,transparent 0 1rem);transform-origin:left;margin:.4rem 0 1.6rem}
+.sp{display:flex;gap:1.2rem;font-size:1.3rem}
+.sp i{font-style:normal;display:inline-block;animation:tw 2.6s ease-in-out infinite}
+.sp i:nth-child(2){animation-delay:.35s}
+.sp i:nth-child(3){animation-delay:.7s}
+.sp i:nth-child(4){animation-delay:1.05s}
+@keyframes tw{50%{transform:scale(.55) rotate(45deg);opacity:.5}}
+.just{text-align:justify;hyphens:auto}
+.a{opacity:0}
+.on .a{animation-duration:.85s;animation-fill-mode:both;animation-timing-function:var(--e);animation-delay:calc(var(--i,0)*.13s + .3s)}
+.on .u{animation-name:u}
+.on .l{animation-name:l}
+.on .r{animation-name:r}
+.on .z{animation-name:z}
+.on .w{animation-name:w;animation-duration:1s}
+.on .x{animation-name:x;animation-duration:.9s}
+.on .k{animation-name:k;animation-duration:1.4s}
+@keyframes u{from{opacity:0;transform:translateY(2.2rem)}to{opacity:1}}
+@keyframes l{from{opacity:0;transform:translateX(-3.5rem)}to{opacity:1}}
+@keyframes r{from{opacity:0;transform:translateX(3.5rem)}to{opacity:1}}
+@keyframes z{from{opacity:0;transform:scale(.7) rotate(calc(var(--r,0deg) - 8deg))}to{opacity:1;transform:rotate(var(--r,0deg))}}
+@keyframes w{from{opacity:1;clip-path:inset(-.3em 100% -.3em 0)}to{opacity:1;clip-path:inset(-.3em -.3em -.3em 0)}}
+@keyframes x{from{opacity:1;transform:scaleX(0)}to{opacity:1}}
+@keyframes k{from{opacity:0;letter-spacing:1.4em}to{opacity:1;letter-spacing:.5em}}
+@keyframes pop{from{opacity:0;transform:scale(.6) translateY(.7rem)}to{opacity:1}}
+@keyframes kb{to{transform:scale(1.09)}}
+.z{transform:rotate(var(--r,0deg))}
+.ph{background:#D6C9AE;fill:#A8977A}
+.ph svg{display:block;width:100%;height:100%}
+.ph img{display:block;width:100%;height:100%;object-fit:cover}
+.pic{padding:.35rem;background:#F3ECDC;box-shadow:0 .5rem 1.2rem rgba(0,0,0,.28)}
+.pic.ph{background:#F3ECDC}
+.pic img{aspect-ratio:4/3;height:auto}
+.tags span,.chips span,.bul li{opacity:0}
+.on .tags span,.on .chips span{animation:pop .55s var(--e) both;animation-delay:calc(.7s + var(--k,0)*.05s)}
+.on .bul li{animation:u .7s var(--e) both;animation-delay:calc(.6s + var(--k,0)*.12s)}
+.on .kq-img img,.on .about-photo img{animation:kb 9s ease-in-out infinite alternate}
+/* cover */
+.cut{background:none;fill:#B59E78;position:absolute;left:50%;bottom:3.6rem;width:min(22rem,60vw);margin-left:calc(min(22rem,60vw)/-2);z-index:1}
+.cut::after{content:"";position:absolute;left:50%;bottom:-1.4rem;width:170%;height:6rem;transform:translateX(-50%);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 100' preserveAspectRatio='none'%3E%3Cpath fill='%23C79A45' d='M0 45Q50 5 100 45T200 45T300 45T400 45T500 45T600 45V100H0Z'/%3E%3Cpath fill='%23701528' d='M0 68Q50 33 100 68T200 68T300 68T400 68T500 68T600 68V100H0Z'/%3E%3C/svg%3E") center/100% 100% no-repeat;pointer-events:none}
+.cut img{display:block;width:auto;height:auto;max-width:100%;max-height:min(60vh,28rem);margin:0 auto;object-fit:contain;filter:drop-shadow(0 0 1px #701528) drop-shadow(0 0 1px #701528) drop-shadow(0 .8rem 1.2rem rgba(0,0,0,.4));-webkit-mask-image:linear-gradient(to bottom,#000 85%,transparent 100%);mask-image:linear-gradient(to bottom,#000 85%,transparent 100%)}
+.k1{font:400 clamp(1.1rem,3.4vw,2.2rem) var(--head);letter-spacing:.5em;text-align:center;margin:0 0 .3rem;padding-left:.5em}
+.cv h1{text-align:center}
+.cvb{display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;margin-top:clamp(7rem,30vh,15rem);position:relative;z-index:2}
+.cvb .t{font-size:clamp(1.3rem,3.4vw,2.4rem);margin:0}
+.nm{text-align:right}
+.nm .dash{margin:.4rem 0 .5rem auto}
+/* about */
+.about-grid{display:grid;gap:1.6rem;align-items:center}
+@media(min-width:800px){.about-grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:3rem}}
+.about-photo{width:100%;max-width:18rem;aspect-ratio:4/5;background:#5A2230;justify-self:center}
+.about-photo img{border:.35rem solid #F3ECDC;box-shadow:0 .8rem 1.4rem rgba(0,0,0,.4);object-position:center top}
+.about{font-size:clamp(.95rem,.9rem + .5vw,1.15rem);line-height:1.65}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.45rem}
+.chips span{border:1.5px solid var(--line);border-radius:99px;padding:.15rem .8rem;font-size:.9rem}
+/* education */
+.ed-grid{display:grid;gap:2rem;align-items:center;padding-bottom:.5rem}
+@media(min-width:900px){.ed-grid{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:3.5rem}}
+.ed-lbl{font-weight:700;font-size:1.15rem;color:var(--line);margin-bottom:.3rem}
+.ed-num{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 .08em;font-size:clamp(5.5rem,min(24vw,38vh),14rem);padding:.1em .12em .14em 0}
+.ed-num b{font:400 1em/.95 var(--head);display:inline-block;padding-bottom:.04em;font-variant-numeric:tabular-nums;color:var(--line);text-shadow:.04em .04em 0 rgba(0,0,0,.5)}
+.ed-num span{font:400 .22em/1 var(--head);opacity:.85}
+.ed-cap{max-width:22rem;font-size:1.1rem;line-height:1.45;margin:1.1rem 0 1.2rem}
+.ed-uni{display:flex;align-items:center;gap:1rem;margin-bottom:1.4rem}
+.ed-logo{flex:none;width:clamp(3.5rem,8vw,5rem);height:auto;background:var(--cream);border-radius:50%;padding:.4rem}
+.ed-uni h2{margin:0;font:600 clamp(1.25rem,3vw,1.9rem)/1.15 var(--body)}
+.ed-uni p{margin-top:.25rem;opacity:.9}
+.ed-meta{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.1rem}
+.ed-meta div{border-left:4px solid var(--line);padding:.2rem 0 .2rem .9rem}
+.ed-meta small{display:block;font-weight:700;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;color:var(--line)}
+.ed-meta b{display:block;font:400 clamp(1.3rem,3vw,1.8rem)/1.15 var(--head);letter-spacing:.03em;text-transform:uppercase}
+@media(max-width:420px){.ed-meta{grid-template-columns:1fr}}
+.ed-card{border:2px solid var(--line);border-radius:.6rem;padding:1.1rem 1.3rem;background:rgba(0,0,0,.18);margin-bottom:1.1rem}
+.ed-card small{display:block;font-weight:700;font-size:.9rem;color:var(--line);margin-bottom:.35rem}
+.ed-card p{font-size:1.02rem;line-height:1.5}
+.ed-badge{display:flex;align-items:center;gap:.8rem;background:var(--line);color:var(--velvet);font-weight:700;line-height:1.3;border-radius:.6rem;padding:.8rem 1.1rem}
+.ed-badge i{font-style:normal;font-size:1.4rem}
+/* skills */
+.sk-grid{display:grid;gap:1.4rem;margin-top:1.4rem}
+@media(min-width:900px){.sk-grid{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}.sk-main{grid-row:span 2}}
+.sk-card{border:3px solid var(--wine);border-radius:.6rem;background:rgba(255,255,255,.35);padding:1.2rem 1.3rem;box-shadow:.4rem .4rem 0 var(--wine)}
+.sk-card h3{font:400 clamp(1.5rem,3vw,2rem)/1 var(--head);text-transform:uppercase;letter-spacing:.02em;margin:0 0 .95rem}
+.tags{display:flex;flex-wrap:wrap;gap:.5rem}
+.tags span{border:2px solid var(--wine);border-radius:99px;padding:.3rem .95rem;font-weight:600;font-size:.95rem;line-height:1.3;transition:transform .25s var(--e)}
+.tags span:hover{transform:translateY(-2px) scale(1.05)}
+.dk .tags span{border-color:var(--line)}
+.sk-main .tags span{background:var(--wine);color:var(--cream);font-size:1.05rem;padding:.45rem 1.1rem}
+.sk-tools .tags span{font-size:.9rem;padding:.25rem .8rem}
+.sk-card,.al-card,.kp-card,.ed-card{transition:transform .35s var(--e),box-shadow .35s var(--e),background .35s}
+.sk-card:hover,.al-card:hover{transform:translate(-3px,-5px);box-shadow:.7rem .7rem 0 var(--wine)}
+.kp-card:hover,.ed-card:hover{transform:translateY(-4px);background:rgba(0,0,0,.34)}
+/* kerja praktek */
+.kp-head,.al-head{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:.6rem 2rem}
+.kp-head .t{font-size:clamp(2.2rem,min(8vw,10vh),5.6rem)}
+.kp-org{text-align:right;padding-bottom:.5rem}
+.kp-org h3{font-size:clamp(1.1rem,2.4vw,1.6rem);margin:0}
+.kp-org p{opacity:.85}
+.kp-main{display:grid;gap:1.6rem;align-items:center;margin-top:.4rem}
+@media(min-width:800px){.kp-main{grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:3rem}}
+.kp-cert{justify-self:center;padding:.5rem;background:#F8F2E4;border:2px solid var(--line);outline:3px solid var(--wine);outline-offset:3px;box-shadow:.6rem .6rem 0 rgba(0,0,0,.4)}
+.kp-cert img{display:block;width:auto;max-width:100%;max-height:min(42vh,22rem)}
+.kp-list{display:grid;gap:.9rem}
+@media(min-width:700px){.kp-list{grid-template-columns:1fr 1fr}}
+.kp-card{display:flex;gap:.9rem;align-items:flex-start;background:rgba(0,0,0,.25);border:2px solid var(--line);border-radius:.6rem;padding:.9rem 1rem}
+.kp-card b{flex:none;font:400 2.4rem/.9 var(--head);color:var(--line);text-shadow:.05em .05em 0 rgba(0,0,0,.5)}
+.kp-card p{font-size:.95rem;line-height:1.45}
+/* scrapbook */
+.kq-photos{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem;margin:1.6rem 0 5.5rem;padding:.6rem .6rem 0}
+@media(min-width:800px){.kq-photos{grid-template-columns:1.35fr 1fr 1fr 1.2fr;gap:0;align-items:center}.kq-photos .kq+.kq{margin-left:-1.6rem}.kq-photos .kq:nth-child(2){translate:0 .9rem}.kq-photos .kq:nth-child(3){translate:0 -.5rem}.kq-photos .kq:nth-child(4){translate:0 .6rem}}
+.kq{position:relative;margin:0;padding:.45rem .45rem 1.6rem;background:#F8F2E4;box-shadow:0 .7rem 1.4rem rgba(0,0,0,.5);transition:scale .3s var(--e),translate .3s var(--e)}
+.kq:hover{scale:1.08;z-index:5}
+.kq::before{content:"";position:absolute;top:-.65rem;left:50%;width:3.8rem;height:1.3rem;margin-left:-1.9rem;transform:rotate(-4deg);background:rgba(199,154,69,.85);box-shadow:0 .1rem .3rem rgba(0,0,0,.3);z-index:2}
+.kq-img{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:#CFC3AB}
+.kq-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 60%;filter:sepia(.1) contrast(1.05)}
+.kq-star{position:absolute;right:-.7rem;bottom:-.7rem;width:2.2rem;height:2.2rem;display:grid;place-items:center;border-radius:50%;background:var(--wine);color:var(--gold);border:2px solid var(--line);font-style:normal;font-size:1rem;z-index:3}
+/* asisten lab */
+.al-head .t{font-size:clamp(2.2rem,min(7vw,10vh),5.2rem)}
+.al-desc{max-width:24rem;font-size:.98rem;line-height:1.5;padding-bottom:.5rem;text-align:right}
+.al-cards{display:grid;gap:1.1rem;margin:.4rem 0 0}
+@media(min-width:800px){.al-cards{grid-template-columns:repeat(3,1fr);gap:1.4rem}}
+.al-card{display:flex;flex-direction:column;border:3px solid var(--wine);border-radius:.6rem;background:rgba(255,255,255,.4);padding:.9rem 1.2rem 1.1rem;box-shadow:.45rem .45rem 0 var(--wine)}
+.al-top{display:flex;align-items:baseline}
+.al-card b{font:400 clamp(3rem,min(8vw,11vh),4.6rem)/.9 var(--head);color:var(--line);text-shadow:.04em .04em 0 var(--wine)}
+.al-card small{margin:0 .5rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.al-card h3{margin:.5rem 0 .9rem;font-size:1.05rem;line-height:1.3}
+.al-sk{margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:.5rem;padding:.45rem 1rem;border-radius:99px;background:var(--wine);color:var(--cream);font-weight:700;font-size:.92rem;text-decoration:none;transition:transform .25s var(--e),background .25s}
+.al-sk:hover{background:var(--line);color:var(--velvet);transform:translateY(-2px)}
+.al-bottom{display:grid;gap:1.8rem;align-items:center;margin:2rem 0 4.5rem}
+@media(min-width:800px){.al-bottom{grid-template-columns:auto minmax(0,1fr);gap:2.6rem}}
+.al-cert{justify-self:center;padding:.5rem;background:#F8F2E4;border:2px solid var(--wine);outline:3px solid var(--line);outline-offset:3px;box-shadow:.6rem .6rem 0 rgba(70,16,29,.45)}
+.al-cert img{display:block;width:auto;max-width:100%;max-height:min(26vh,13rem)}
+.al-photos{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem;padding:.6rem .6rem 0}
+@media(min-width:800px){.al-photos{grid-template-columns:repeat(4,1fr);gap:0;align-items:center}}
+.al-photos .kq+.kq{margin-left:-1rem}
+.al-photos .kq{box-shadow:0 .7rem 1.4rem rgba(70,16,29,.4)}
+.al-photos .kq-img img{object-position:center 40%}
+/* pelatihan */
+.xp-grid{display:grid;gap:2rem;align-items:center}
+@media(min-width:850px){.xp-grid{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:3rem}}
+.xp-meta{display:flex;flex-wrap:wrap;gap:.45rem}
+.xp-meta span{border:1.5px solid var(--line);border-radius:99px;padding:.2rem .8rem;font-size:.88rem;font-weight:600;background:rgba(0,0,0,.18)}
+.collage{display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start;padding:.4rem}
+.collage .pic img{width:100%;object-fit:cover}
+.cert-frame{grid-column:1/-1;justify-self:center;padding:.5rem;background:#F8F2E4;border:2px solid var(--line);outline:3px solid var(--wine);outline-offset:3px;box-shadow:.5rem .5rem 0 rgba(0,0,0,.4)}
+.cert-frame img{display:block;width:auto;max-width:100%;max-height:min(30vh,14rem)}
+/* proyek */
+.cols{display:grid;gap:1.6rem}
+@media(min-width:800px){.cols{grid-template-columns:1fr 1fr;gap:3rem}}
+.bul{margin:0;padding:0;list-style:none}
+.bul li{position:relative;padding-left:1.1rem;margin-bottom:.6rem;font-size:.98rem;line-height:1.45}
+.bul li::before{content:"";position:absolute;left:0;top:.6em;width:.4rem;height:.4rem;border-radius:50%;background:currentColor}
+/* piagam */
+.pg-head{display:flex;align-items:center;gap:1.2rem 1.5rem;flex-wrap:wrap;margin-bottom:.4rem}
+.pg-head .t{margin:0}
+.pg-badge{border:2px solid var(--wine);border-radius:99px;padding:.3rem 1rem;font-weight:700;font-size:.9rem;letter-spacing:.04em;text-transform:uppercase;background:rgba(112,21,40,.08)}
+.pg-wrap{display:grid;gap:1.6rem;align-items:center;margin-top:1rem}
+@media(min-width:850px){.pg-wrap{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:2.6rem}}
+.pg-stage{margin:0;justify-self:center;width:100%;padding:.6rem .6rem .5rem;background:#F8F2E4;border:3px solid var(--wine);outline:3px solid var(--line);outline-offset:4px;box-shadow:.6rem .6rem 0 rgba(70,16,29,.4)}
+.pg-frame{height:min(46vh,24rem);display:grid;place-items:center;background:#EFE6D2;overflow:hidden}
+.pg-frame img{display:block;max-width:100%;max-height:100%;object-fit:contain;transition:opacity .35s}
+.pg-frame img.fade{opacity:0}
+.pg-cap{text-align:center;margin-top:.55rem;font:400 1.15rem/1.1 var(--head);letter-spacing:.05em;text-transform:uppercase}
+.pg-cap small{display:block;font:600 .8rem var(--body);letter-spacing:.05em;opacity:.75;margin-top:.2rem}
+.pg-thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
+.pg-th{position:relative;padding:.3rem .3rem 1.5rem;background:#F8F2E4;border:2px solid var(--wine);border-radius:.3rem;box-shadow:.25rem .25rem 0 rgba(70,16,29,.35);transition:transform .25s var(--e),box-shadow .25s}
+.pg-th:hover{transform:translateY(-3px)}
+.pg-th img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#CFC3AB}
+.pg-th span{position:absolute;left:0;right:0;bottom:.3rem;text-align:center;font:400 .9rem/1 var(--head);letter-spacing:.06em;text-transform:uppercase}
+.pg-th.on{background:var(--wine);color:var(--cream);transform:translateY(-3px);box-shadow:.25rem .25rem 0 var(--line)}
+.cert-note{margin-top:1.4rem;font-size:.9rem;font-style:italic;opacity:.85;max-width:46rem}
+/* lulusan terbaik */
+.gr-sub{font-size:clamp(1rem,2.2vw,1.35rem);font-weight:600}
+.gr-sub b{color:var(--line)}
+.gr-grid{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:2.8rem 3.5rem;margin-top:1.4rem}
+.gr-cert{position:relative;min-width:0;max-width:100%;padding:.8rem;background:#F8F2E4;border:3px solid var(--line);outline:3px solid var(--wine);outline-offset:5px;box-shadow:.8rem .8rem 0 rgba(0,0,0,.45)}
+.gr-cert img{display:block;width:auto;height:auto;max-width:100%;max-height:min(54vh,30rem)}
+.gr-seal{position:absolute;top:-1.8rem;right:-1.4rem;width:6rem;height:6rem;border-radius:50%;display:grid;place-items:center;text-align:center;background:var(--line);color:var(--velvet);border:3px dashed var(--velvet);font:400 1.05rem/1.05 var(--head);text-transform:uppercase;transform:rotate(12deg);box-shadow:0 .4rem .8rem rgba(0,0,0,.4);z-index:3}
+.gr-photo{position:relative;min-width:12rem;max-width:100%;margin:0;padding:.7rem .7rem 3rem;background:#F8F2E4;box-shadow:0 1rem 1.8rem rgba(0,0,0,.5)}
+.gr-photo::before{content:"";position:absolute;top:-.8rem;left:50%;width:4.6rem;height:1.5rem;margin-left:-2.3rem;transform:rotate(-4deg);background:rgba(199,154,69,.85);box-shadow:0 .1rem .3rem rgba(0,0,0,.3);z-index:2}
+.gr-photo img{display:block;width:auto;height:auto;max-width:100%;max-height:min(52vh,28rem);margin:0 auto}
+.gr-photo figcaption{position:absolute;left:0;right:0;bottom:.8rem;text-align:center;color:var(--wine);font:400 1.3rem/1 var(--head);letter-spacing:.08em;text-transform:uppercase}
+/* kontak */
+.ct{display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.2rem 2rem;align-items:center;position:relative}
+.ci{list-style:none;margin:0 0 .8rem;padding:0;display:grid;gap:1.1rem}
+.ci li{display:flex;align-items:center;gap:.8rem;font-weight:500;font-size:1.1rem}
+.ci a{color:inherit;text-decoration:none;word-break:break-all}
+.ci a:hover{text-decoration:underline}
+.ic{flex:none;width:2.2rem;height:2.2rem;border-radius:50%;background:var(--wine);color:var(--cream);display:grid;place-items:center;font-size:.95rem;font-weight:700}
+.again{margin-top:1.4rem;border:2px solid var(--wine);border-radius:.6rem;padding:.55rem 1.1rem;font-weight:600;transition:background .25s,color .25s}
+.again:hover{background:var(--wine);color:var(--cream)}
+.ct .ph{position:static;justify-self:center;align-self:center;width:min(20rem,38vw);aspect-ratio:5/6;background:none;fill:#B59E78;filter:drop-shadow(0 .6rem 1rem rgba(0,0,0,.25))}
+/* unduh */
+.dlrow{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.4rem}
+.dlrow .again{margin-top:0}
+.again.pri{background:var(--wine);color:var(--cream)}
+.again.pri:hover{background:var(--line);color:var(--velvet);border-color:var(--line)}
+.again:disabled{opacity:.6;cursor:wait}
+.dlmsg{margin-top:.6rem;font-size:.88rem;font-weight:600;max-width:30rem;min-height:1.2em}
+/* sampul dan kontak */
+.cv .xl{font-size:clamp(3rem,min(16vw,21vh),12rem)}
+.cvdl{position:absolute;left:1.5rem;bottom:11rem;flex-direction:column;align-items:flex-start;gap:.4rem;margin:0;z-index:3}
+.cv .cvdl .again{font-size:.75rem;padding:.3rem .75rem;border-width:1.5px;border-radius:.5rem}
+.cvdl .dlmsg{font-size:.72rem;max-width:13rem;margin:.2rem 0 0;text-align:left}
+.dlmsg:empty{display:none}
+.cvb{margin-top:clamp(4rem,22vh,15rem)}
+.cut img{max-height:min(60vh,28rem)}
+@media(max-width:700px){.cvdl{position:static;flex-direction:row;flex-wrap:wrap;justify-content:center;margin-top:.6rem}.cvdl .dlmsg{width:100%;max-width:none;text-align:center}}
+.cs .xl{font-size:clamp(3rem,min(15vw,18vh),11rem)!important}
+.cs .ci{gap:.8rem}
+@media(max-width:600px){.cv .cvdl .again{font-size:.8rem;padding:.45rem .8rem}}
 /* ===== cetak / simpan PDF: tampilan sama seperti layar 1920x1080, 1 slide = 1 halaman ===== */
 @page{size:1920px 1080px;margin:0}
 @media print{
@@ -1740,859 +277,431 @@ main{display:block}
 .pg-th{padding:.4rem .4rem 1.8rem}
 .pg-th img{aspect-ratio:4/3;object-fit:contain;background:#EFE6D2}
 .pg-th.on{background:#F8F2E4;color:var(--wine);transform:none;box-shadow:.25rem .25rem 0 rgba(70,16,29,.35)}
-}        /* dekorasi slide kontak */
-        
-        .cs .in {
-            z-index: 1
-        }
-        
-        .deco {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-            pointer-events: none
-        }
-        
-        .deco::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 4.5rem;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 100' preserveAspectRatio='none'%3E%3Cpath fill='%23C79A45' d='M0 45Q50 5 100 45T200 45T300 45T400 45T500 45T600 45V100H0Z'/%3E%3Cpath fill='%23701528' d='M0 68Q50 33 100 68T200 68T300 68T400 68T500 68T600 68V100H0Z'/%3E%3C/svg%3E") center/100% 100% no-repeat
-        }
-        
-        .dc {
-            position: absolute;
-            display: block
-        }
-        
-        .dc b {
-            display: block;
-            width: 100%;
-            height: 100%
-        }
-        
-        @keyframes bob {
-            50% {
-                transform: translateY(-1rem)
-            }
-        }
-        
-        @keyframes spin {
-            to {
-                transform: rotate(360deg)
-            }
-        }
-        
-        .c1 {
-            right: -5rem;
-            top: 18%;
-            width: min(22rem, 50vw);
-            aspect-ratio: 1
-        }
-        
-        .c1 b {
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--line) 0 22%, var(--wine) 22% 55%, transparent 55% 62%, var(--wine) 62% 70%, transparent 70%);
-            animation: bob 7s ease-in-out infinite
-        }
-        
-        .c2 {
-            right: 20%;
-            bottom: 15%;
-            width: min(6.5rem, 18vw);
-            aspect-ratio: 1
-        }
-        
-        .c2 b {
-            border-radius: 50%;
-            background: var(--line);
-            box-shadow: .4rem .4rem 0 var(--wine);
-            animation: bob 5s ease-in-out infinite .6s
-        }
-        
-        .c3 {
-            right: 30%;
-            top: 14%;
-            width: min(9rem, 22vw);
-            aspect-ratio: 1
-        }
-        
-        .c3 b {
-            border-radius: 50%;
-            border: 3px dashed var(--wine);
-            animation: spin 20s linear infinite
-        }
-        
-        .c4 {
-            right: 5%;
-            top: 7%;
-            width: min(8rem, 20vw);
-            height: 4.5rem
-        }
-        
-        .c4 b {
-            border: 3px solid var(--wine);
-            border-radius: .6rem;
-            background: repeating-linear-gradient(45deg, var(--wine) 0 .5rem, transparent .5rem 1rem)
-        }
-        
-        .st b {
-            width: auto;
-            height: auto;
-            font: 400 3rem/1 var(--head);
-            color: var(--line);
-            text-shadow: .06em .06em 0 var(--wine);
-            animation: tw 3s ease-in-out infinite
-        }
-        
-        .c5 {
-            right: 37%;
-            bottom: 24%
-        }
-        
-        .c6 {
-            right: 9%;
-            bottom: 34%
-        }
-        
-        .c6 b {
-            font-size: 2rem;
-            animation-delay: .8s
-        }
-        
-        .c7 {
-            left: 6%;
-            bottom: 8rem
-        }
-        
-        .c7 b {
-            font-size: 2.2rem;
-            animation-delay: 1.4s
-        }
-        
-        @media(max-width:600px) {
-            .c1 b {
-                opacity: .35
-            }
-            .c3,
-            .c4 {
-                display: none
-            }
-            .c1 {
-                right: -9rem
-            }
-            .c5 {
-                right: 12%;
-                bottom: 30%
-            }
-        }
-        /* responsif */
-        
-        @media(max-width:899px) {
-            .kp-org {
-                text-align: left
-            }
-            .kp-head,
-            .al-head {
-                align-items: flex-start
-            }
-        }
-        
-        @media(max-width:799px) {
-            .hm {
-                display: none
-            }
-            .in {
-                padding-top: 4.8rem
-            }
-            .al-desc {
-                text-align: left
-            }
-        }
-        
-        @media(max-width:1100px) {
-            .about {
-                text-align: left
-            }
-        }
-        
-        @media(max-height:760px) {
-            .in {
-                padding-top: 4.6rem;
-                padding-bottom: 4.8rem
-            }
-            .about {
-                font-size: .95rem!important;
-                line-height: 1.55!important
-            }
-            .chips span {
-                font-size: .82rem
-            }
-        }
-        
-        @media(max-width:600px) {
-            .in {
-                padding: 4.6rem 1.1rem 5.8rem
-            }
-            .nv {
-                font-size: .66rem;
-                padding: 0 1.1rem;
-                letter-spacing: .03em
-            }
-            .bar {
-                padding: 0 .7rem
-            }
-            .ctl {
-                bottom: calc(env(safe-area-inset-bottom, 0px) + .6rem)
-            }
-            .ctl button {
-                width: 2.2rem;
-                height: 2.2rem
-            }
-            .cvb .t {
-                font-size: clamp(1rem, 4.6vw, 1.5rem)
-            }
-            .k1 {
-                letter-spacing: .35em
-            }
-            .sp {
-                font-size: 1rem;
-                gap: .8rem
-            }
-            .sk-card {
-                padding: 1rem;
-                box-shadow: .25rem .25rem 0 var(--wine)
-            }
-            .tags span,
-            .sk-main .tags span {
-                font-size: .85rem;
-                padding: .25rem .75rem
-            }
-            .al-card {
-                box-shadow: .25rem .25rem 0 var(--wine)
-            }
-            .kq-photos {
-                margin-bottom: 4rem
-            }
-            .al-photos .kq+.kq {
-                margin-left: 0
-            }
-            .pg-frame {
-                height: min(36vh, 20rem)
-            }
-            .pg-thumbs {
-                gap: .5rem
-            }
-            .gr-grid {
-                gap: 2.2rem
-            }
-            .gr-seal {
-                width: 4.4rem;
-                height: 4.4rem;
-                font-size: .8rem;
-                top: -1.3rem;
-                right: -.5rem
-            }
-            .ci li {
-                font-size: 1rem
-            }
-            .about {
-                hyphens: none
-            }
-        }
-        
-        @media(max-height:520px) and (orientation:landscape) {
-            .in {
-                padding: 3.8rem 1.5rem 4rem
-            }
-            .t {
-                font-size: clamp(1.8rem, min(8vw, 15vh), 3.6rem)
-            }
-            .xl {
-                font-size: clamp(2.4rem, min(14vw, 20vh), 5rem)
-            }
-            .ed-num {
-                font-size: clamp(4rem, min(20vw, 30vh), 8rem)
-            }
-            .ctl {
-                transform: translateX(-50%) scale(.85);
-                bottom: .3rem
-            }
-        }
-        
-        @media(min-width:1600px) {
-            .in {
-                padding-left: 2rem;
-                padding-right: 2rem
-            }
-        }
-        
-        @media(hover:none) {
-            .sk-card:hover,
-            .al-card:hover,
-            .kp-card:hover,
-            .ed-card:hover,
-            .tags span:hover {
-                transform: none
-            }
-        }
-        
-        @media(prefers-reduced-motion:reduce) {
-            * {
-                animation: none!important;
-                transition: none!important
-            }
-            .a,
-            .tags span,
-            .chips span,
-            .bul li {
-                opacity: 1
-            }
-            .s {
-                transform: none;
-                filter: none
-            }
-            .seg.on i {
-                width: 100%
-            }
-        }
-    </style>
+}
+/* dekorasi slide kontak */
+.cs .in{z-index:1}
+.deco{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.deco::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4.5rem;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 100' preserveAspectRatio='none'%3E%3Cpath fill='%23C79A45' d='M0 45Q50 5 100 45T200 45T300 45T400 45T500 45T600 45V100H0Z'/%3E%3Cpath fill='%23701528' d='M0 68Q50 33 100 68T200 68T300 68T400 68T500 68T600 68V100H0Z'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+.dc{position:absolute;display:block}
+.dc b{display:block;width:100%;height:100%}
+@keyframes bob{50%{transform:translateY(-1rem)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.c1{right:-5rem;top:18%;width:min(22rem,50vw);aspect-ratio:1}
+.c1 b{border-radius:50%;background:radial-gradient(circle,var(--line) 0 22%,var(--wine) 22% 55%,transparent 55% 62%,var(--wine) 62% 70%,transparent 70%);animation:bob 7s ease-in-out infinite}
+.c2{right:20%;bottom:15%;width:min(6.5rem,18vw);aspect-ratio:1}
+.c2 b{border-radius:50%;background:var(--line);box-shadow:.4rem .4rem 0 var(--wine);animation:bob 5s ease-in-out infinite .6s}
+.c3{right:30%;top:14%;width:min(9rem,22vw);aspect-ratio:1}
+.c3 b{border-radius:50%;border:3px dashed var(--wine);animation:spin 20s linear infinite}
+.c4{right:5%;top:7%;width:min(8rem,20vw);height:4.5rem}
+.c4 b{border:3px solid var(--wine);border-radius:.6rem;background:repeating-linear-gradient(45deg,var(--wine) 0 .5rem,transparent .5rem 1rem)}
+.st b{width:auto;height:auto;font:400 3rem/1 var(--head);color:var(--line);text-shadow:.06em .06em 0 var(--wine);animation:tw 3s ease-in-out infinite}
+.c5{right:37%;bottom:24%}
+.c6{right:9%;bottom:34%}
+.c6 b{font-size:2rem;animation-delay:.8s}
+.c7{left:6%;bottom:8rem}
+.c7 b{font-size:2.2rem;animation-delay:1.4s}
+@media(max-width:600px){.c1 b{opacity:.35}.c3,.c4{display:none}.c1{right:-9rem}.c5{right:12%;bottom:30%}}
+/* responsif */
+@media(max-width:899px){.kp-org{text-align:left}.kp-head,.al-head{align-items:flex-start}}
+@media(max-width:799px){.hm{display:none}.in{padding-top:4.8rem}.al-desc{text-align:left}}
+@media(max-width:1100px){.about{text-align:left}}
+@media(max-height:760px){.in{padding-top:4.6rem;padding-bottom:4.8rem}.about{font-size:.95rem!important;line-height:1.55!important}.chips span{font-size:.82rem}}
+@media(max-width:600px){
+.in{padding:4.6rem 1.1rem 5.8rem}
+.nv{font-size:.66rem;padding:0 1.1rem;letter-spacing:.03em}
+.bar{padding:0 .7rem}
+.ctl{bottom:calc(env(safe-area-inset-bottom,0px) + .6rem)}
+.ctl button{width:2.2rem;height:2.2rem}
+.cvb .t{font-size:clamp(1rem,4.6vw,1.5rem)}
+.k1{letter-spacing:.35em}
+.sp{font-size:1rem;gap:.8rem}
+.sk-card{padding:1rem;box-shadow:.25rem .25rem 0 var(--wine)}
+.tags span,.sk-main .tags span{font-size:.85rem;padding:.25rem .75rem}
+.al-card{box-shadow:.25rem .25rem 0 var(--wine)}
+.kq-photos{margin-bottom:4rem}
+.al-photos .kq+.kq{margin-left:0}
+.pg-frame{height:min(36vh,20rem)}
+.pg-thumbs{gap:.5rem}
+.gr-grid{gap:2.2rem}
+.gr-seal{width:4.4rem;height:4.4rem;font-size:.8rem;top:-1.3rem;right:-.5rem}
+.ci li{font-size:1rem}
+.about{hyphens:none}}
+@media(max-height:520px) and (orientation:landscape){
+.in{padding:3.8rem 1.5rem 4rem}
+.t{font-size:clamp(1.8rem,min(8vw,15vh),3.6rem)}
+.xl{font-size:clamp(2.4rem,min(14vw,20vh),5rem)}
+.ed-num{font-size:clamp(4rem,min(20vw,30vh),8rem)}
+.ctl{transform:translateX(-50%) scale(.85);bottom:.3rem}}
+@media(min-width:1600px){.in{padding-left:2rem;padding-right:2rem}}
+@media(hover:none){.sk-card:hover,.al-card:hover,.kp-card:hover,.ed-card:hover,.tags span:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.a,.tags span,.chips span,.bul li{opacity:1}.s{transform:none;filter:none}.seg.on i{width:100%}}
+</style>
 </head>
-
 <body>
-    <div class="bar" id="bar" aria-label="Progres slide"></div>
-    <main>
-        <!-- 1 Cover -->
-        <section class="s lt on" data-d="7" aria-label="Sampul">
-            <div class="in cv">
-                <p class="a k k1" style="--i:0">WELCOME TO</p>
-                <h1 class="t xl a w" style="--i:2">Portfolio</h1>
-                <div class="dlrow cvdl a u" style="--i:3"><button class="again pri" id="dlZip">⬇ Unduh Portofolio + SK (ZIP)</button><button class="again" id="dlPdf">Simpan sebagai PDF</button>
-                    <p id="dlMsg" class="dlmsg" role="status"></p>
-                </div>
-                <div class="ph cut a u" style="--i:5" role="img" aria-label="Foto profil"><img src="Foto1.png" alt=""></div>
-                <div class="cvb">
-                    <div class="a l" style="--i:4">
-                        <p class="t">2026</p>
-                        <div class="sp"></div>
-                    </div>
-                    <div class="nm a r" style="--i:4">
-                        <p class="t">Natalin Memory<br>Ayu</p>
-                        <div class="dash"></div>
-                        <div class="sp" style="justify-content:flex-end"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 2 Tentang -->
-        <section class="s dk" data-d="10" data-nav="About Me" aria-label="About Me">
-            <div class="in">
-                <h2 class="t a w" style="--i:0">Halo, saya Ayu</h2>
-                <div class="about-grid">
-                    <div class="ph about-photo a z" style="--i:2;--r:-2deg" role="img" aria-label="Foto Ayu"><img src="Foto2.jpg" alt=""></div>
-                    <div class="a r" style="--i:3">
-                        <p class="just about">Lulusan S1 Teknik Informatika Universitas Kristen Indonesia Toraja yang terbiasa bekerja dengan komputer, mengembangkan sistem informasi, mengelola dokumen dan data, serta menjelaskan materi teknis kepada orang lain. Pengalaman
-                            sebagai asisten praktikum di mata kuliah program studi Teknik Informatika, kerja praktek di instansi pemerintah, dan pengajar pelatihan Google Workspace membentuk saya menjadi pribadi yang teliti dan bertanggung jawab. Ke depan,
-                            saya ingin berkarier di bidang web development, sistem informasi, pengelolaan data, atau administrasi digital, sambil terus belajar langsung di dunia kerja.</p>
-                        <div class="chips a u" style="--i:5;margin-top:1.3rem"><span>Lulusan terbaik S1, semester genap 2025/2026</span><span>IPK tertinggi Program Studi Teknik Informatika selama 8 semester</span></div>
-                        <div class="dash a x" style="--i:6;margin-top:1.4rem;margin-left:auto"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3 Pendidikan -->
-        <section class="s dk" data-d="9" data-nav="Education" aria-label="Pendidikan">
-            <div class="in">
-                <div class="ed-grid">
-                    <div>
-                        <p class="ed-lbl a u" style="--i:0">IPK</p>
-                        <div class="ed-num a w" style="--i:1"><b>3,95</b><span>/4,00</span></div>
-                        <p class="ed-cap a u" style="--i:3">Tertinggi di Program Studi Teknik Informatika selama 8 semester</p>
-                        <div class="sp a z" style="--i:4"></div>
-                    </div>
-                    <div>
-                        <div class="ed-uni a r" style="--i:2"><img class="ed-logo" src="uki.png" alt="Logo Universitas Kristen Indonesia Toraja">
-                            <div>
-                                <h2>Universitas Kristen Indonesia Toraja</h2>
-                                <p>S1 Teknik Informatika</p>
-                            </div>
-                        </div>
-                        <div class="ed-meta a r" style="--i:3">
-                            <div><small>Periode</small><b>2022 – 2026</b></div>
-                            <div><small>Peminatan</small><b>Enterprise System</b></div>
-                        </div>
-                        <div class="ed-card a r" style="--i:3"><small>Tugas akhir</small>
-                            <p>Sistem Informasi Layanan Posyandu Berbasis Website untuk Monitoring Pertumbuhan dan Imunisasi Balita dengan Framework Laravel di Kelurahan Rante</p>
-                        </div>
-                        <div class="ed-badge a r" style="--i:4"><i>★</i><span>Lulusan terbaik program sarjana semester genap 2025/2026</span></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4 Skills -->
-        <section class="s lt" data-d="9" data-nav="Skills" aria-label="Skills">
-            <div class="in">
-                <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
-                    <h2 class="t a w" style="--i:0;margin:0">Skills</h2>
-                    <div class="sp a z" style="--i:1"></div>
-                </div>
-                <div class="sk-grid">
-                    <div class="sk-card sk-main a u" style="--i:2">
-                        <h3>Hard skill</h3>
-                        <div class="tags"><span>System Requirement Analysis</span><span>Web Development</span><span>Software Testing</span><span>Black Box Testing</span><span>UAT</span><span>Design UI/UX</span><span>Data Entry</span><span>Data Processing</span><span>Data Management</span><span>General Administration</span><span>Document Control</span><span>Document Preparation</span></div>
-                    </div>
-                    <div class="sk-card a u" style="--i:3">
-                        <h3>Soft skill</h3>
-                        <div class="tags"><span>Problem Solving</span><span>Teamwork</span><span>Communication Skill</span><span>Time Management</span><span>Dependability</span><span>Attention to Detail</span><span>Active Listening</span></div>
-                    </div>
-                    <div class="sk-card sk-tools a u" style="--i:4">
-                        <h3>Tools</h3>
-                        <div class="tags"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>PHP</span><span>Laravel</span><span>MySQL</span><span>Google Workspace</span><span>Google Docs</span><span>Google Sheets</span><span>Google Slides</span><span>Google Forms</span><span>Google Site</span><span>Microsoft Word</span><span>Microsoft Excel</span><span>Microsoft PowerPoint</span><span>Canva</span><span>Figma</span></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 5 Kerja Praktek -->
-        <section class="s dk" data-d="9" data-nav="Experience" aria-label="Kerja praktek">
-            <div class="in">
-                <div class="kp-head">
-                    <h2 class="t a w" style="--i:0;margin:0">Kerja Praktek</h2>
-                    <div class="kp-org a r" style="--i:2">
-                        <h3>Sekretariat Daerah Tana Toraja</h3>
-                        <p>Bagian Umum</p>
-                    </div>
-                </div>
-                <div class="dash a x" style="--i:1"></div>
-                <div class="kp-main">
-                    <div class="kp-cert a z" style="--i:2;--r:-2deg"><img src="kp/SERTIFIKAT-KP.jpeg" alt="Sertifikat kerja praktek"></div>
-                    <div class="kp-list">
-                        <div class="kp-card a u" style="--i:3"><b>01</b>
-                            <p>Melakukan input dan validasi data administrasi pegawai (KGB, DPCP, SKP)</p>
-                        </div>
-                        <div class="kp-card a u" style="--i:4"><b>02</b>
-                            <p>Menyusun, mengetik, dan mengarsipkan surat</p>
-                        </div>
-                        <div class="kp-card a u" style="--i:5"><b>03</b>
-                            <p>Mengelola dan mengarsipkan surat masuk dan surat keluar dalam bentuk fisik dan digital</p>
-                        </div>
-                        <div class="kp-card a u" style="--i:6"><b>04</b>
-                            <p>Mencatat dan mengarsipkan data keuangan (kwitansi pengeluaran)</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="kq-photos">
-                    <figure class="kq a z" style="--i:5;--r:-4deg">
-                        <div class="kq-img"><img src="kp/KP1.jpg" alt="Dokumentasi kerja praktek 1"></div><i class="kq-star">✦</i></figure>
-                    <figure class="kq a z" style="--i:6;--r:3deg">
-                        <div class="kq-img"><img src="kp/KP2.jpg" alt="Dokumentasi kerja praktek 2"></div>
-                    </figure>
-                    <figure class="kq a z" style="--i:7;--r:-2deg">
-                        <div class="kq-img"><img src="kp/KP3.jpg" alt="Dokumentasi kerja praktek 3"></div>
-                    </figure>
-                    <figure class="kq a z" style="--i:8;--r:4deg">
-                        <div class="kq-img"><img src="kp/KP4.jpg" alt="Dokumentasi kerja praktek 4"></div><i class="kq-star">✦</i></figure>
-                </div>
-            </div>
-        </section>
-
-        <!-- 6 Asisten Laboratorium -->
-        <section class="s lt" data-d="12" data-nav="Experience" aria-label="Asisten Laboratorium">
-            <div class="in">
-                <div class="al-head">
-                    <h2 class="t a w" style="--i:0;margin:0">Asisten Laboratorium</h2>
-                    <p class="al-desc a r" style="--i:2">Menjelaskan materi praktikum, mendampingi mahasiswa yang mengalami kesulitan, serta memeriksa laporan dan memberi penilaian.</p>
-                </div>
-                <div class="dash a x" style="--i:1"></div>
-                <div class="al-cards">
-                    <div class="al-card a u" style="--i:2">
-                        <div class="al-top"><small>Semester</small><b>6</b></div>
-                        <h3>Pemrograman Web</h3><a class="al-sk" href="New folder/NATALIN MEMORY AYU - PENETAPAN ASISTEN LABORATAORIUM GENAP 2024_2025.pdf" target="_blank" rel="noopener">Lihat SK (PDF)</a></div>
-                    <div class="al-card a u" style="--i:3">
-                        <div class="al-top"><small>Semester</small><b>7</b></div>
-                        <h3>Pemrograman Berorientasi Objek</h3><a class="al-sk" href="New folder/NATALIN MEMORY AYU - PENETAPAN ASISTEN LABORATAORIUM GANJIL 2025_2026.pdf" target="_blank" rel="noopener">Lihat SK (PDF)</a></div>
-                    <div class="al-card a u" style="--i:4">
-                        <div class="al-top"><small>Semester</small><b>8</b></div>
-                        <h3>Pemrograman Berbasis Kerangka Kerja (Laravel)</h3><a class="al-sk" href="New folder/NATALIN MEMORY AYU - PENETAPAN ASISTEN LABORATAORIUM_GENAP 2025_2026.pdf" target="_blank" rel="noopener">Lihat SK (PDF)</a></div>
-                </div>
-                <div class="al-bottom">
-                    <div class="al-cert a z" style="--i:5;--r:-2deg"><img src="New folder/Sertifikat Teknik Informatika 222611008 NATALIN MEMORY AYU (1)_page-0001.jpg" alt="Sertifikat asisten laboratorium"></div>
-                    <div class="al-photos">
-                        <figure class="kq a z" style="--i:6;--r:-3deg">
-                            <div class="kq-img"><img src="New folder/aslab1.jpeg" alt="Dokumentasi asisten laboratorium 1"></div><i class="kq-star">✦</i></figure>
-                        <figure class="kq a z" style="--i:7;--r:3deg">
-                            <div class="kq-img"><img src="New folder/aslab2.jpeg" alt="Dokumentasi asisten laboratorium 2"></div>
-                        </figure>
-                        <figure class="kq a z" style="--i:8;--r:-2deg">
-                            <div class="kq-img"><img src="New folder/aslab3.jpeg" alt="Dokumentasi asisten laboratorium 3"></div>
-                        </figure>
-                        <figure class="kq a z" style="--i:9;--r:4deg">
-                            <div class="kq-img"><img src="New folder/aslab4.jpeg" alt="Dokumentasi asisten laboratorium 4"></div><i class="kq-star">✦</i></figure>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 7 Pelatihan -->
-        <section class="s dk" data-d="12" data-nav="Experience" aria-label="Pelatihan Digital Office">
-            <div class="in">
-                <h2 class="t a w" style="--i:0;margin-bottom:.3rem">Pengajar Pelatihan</h2>
-                <div class="dash a x" style="--i:1"></div>
-                <div class="xp-grid">
-                    <div>
-                        <h3 class="a r" style="--i:2;font-size:clamp(1.2rem,2.6vw,1.7rem)">Instruktur Administrasi Perkantoran Berbasis Google Workspace</h3>
-                        <p class="sub a r" style="--i:3;margin-bottom:.9rem">PKBM Arrang Kameloan · Program Kemnaker</p>
-                        <div class="xp-meta a u" style="--i:4"><span>September - Oktober 2026</span><span>Tallulolo, Kesu, Toraja Utara</span></div>
-                        <p class="a u" style="--i:5;font-size:1rem;line-height:1.55;margin:1rem 0 .7rem">Ditugaskan PKBM Arrang Kameloan untuk mengajar pelatihan Administrasi Perkantoran berbasis Google Workspace.</p>
-                        <ul class="bul">
-                            <li>Mengajarkan cara mengoperasikan Google Docs, Sheets, Slides, Drive, dan Forms.</li>
-                            <li>Melatih peserta membuat surat resmi, mencatat dan mengarsipkan surat masuk dan keluar, serta mengelola petty cash.</li>
-                            <li>Mendampingi peserta yang mengalami kesulitan sampai mereka bisa mengikuti materi.</li>
-                        </ul>
-                        <div class="tags a u" style="--i:7;margin-top:.9rem"><span>Google Docs</span><span>Sheets</span><span>Slides</span><span>Drive</span><span>Forms</span></div>
-                    </div>
-                    <div class="collage">
-                        <div class="pic ph a z" style="--i:3;--r:-3deg"><img src="kursus/WhatsApp Image 2026-10-30 at 13.29.03.jpeg" alt="Dokumentasi pelatihan 1"></div>
-                        <div class="pic ph a z" style="--i:4;--r:3deg"><img src="kursus/WhatsApp Image 2026-10-30 at 13.29.00.jpeg" alt="Dokumentasi pelatihan 2"></div>
-                        <div class="cert-frame a z" style="--i:5;--r:-1deg"><img src="ks1.jpeg" alt="Dokumentasi pelatihan 3"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- 9 Piagam Penghargaan -->
-        <section class="s lt" data-d="16" data-nav="Achievement" aria-label="Achievement">
-            <div class="in">
-                <div class="pg-head">
-                    <h2 class="t a w" style="--i:0">Piagam Penghargaan</h2><span class="pg-badge a u" style="--i:1">IPK tertinggi Prodi Teknik Informatika angkatan 2022 · 8 semester</span></div>
-                <div class="pg-wrap">
-                    <figure class="pg-stage a z" style="--i:2;--r:-1deg">
-                        <div class="pg-frame"><img id="pgMain" src="sertifikat/IPK Tertinggi Teknik Informatika - Gasal 2022_2023_page-0001.jpg" alt="Piagam IPK tertinggi semester 1"></div>
-                        <figcaption class="pg-cap" id="pgCap">IPK Tertinggi · Semester 1<small>Gasal 2022/2023</small></figcaption>
-                    </figure>
-                    <div class="pg-thumbs">
-                        <button class="pg-th on a u" style="--i:3" data-src="sertifikat/IPK Tertinggi Teknik Informatika - Gasal 2022_2023_page-0001.jpg" data-sem="Semester 1" data-term="Gasal 2022/2023" aria-label="Piagam IPK tertinggi semester 1"><img src="sertifikat/IPK Tertinggi Teknik Informatika - Gasal 2022_2023_page-0001.jpg" alt="Piagam IPK tertinggi semester 1" loading="lazy"><span>Sem 1</span></button>
-                        <button class="pg-th a u" style="--i:4" data-src="sertifikat/IPK Tertinggi Teknik Informatika - Genap 2022_2023_page-0001.jpg" data-sem="Semester 2" data-term="Genap 2022/2023" aria-label="Piagam IPK tertinggi semester 2"><img src="sertifikat/IPK Tertinggi Teknik Informatika - Genap 2022_2023_page-0001.jpg" alt="Piagam IPK tertinggi semester 2" loading="lazy"><span>Sem 2</span></button>
-                        <button class="pg-th a u" style="--i:5" data-src="sertifikat/IPK Tertinggi Teknik Informatika - Gasal 2023_2024_page-0001.jpg" data-sem="Semester 3" data-term="Gasal 2023/2024" aria-label="Piagam IPK tertinggi semester 3"><img src="sertifikat/IPK Tertinggi Teknik Informatika - Gasal 2023_2024_page-0001.jpg" alt="Piagam IPK tertinggi semester 3" loading="lazy"><span>Sem 3</span></button>
-                        <button class="pg-th a u" style="--i:6" data-src="sertifikat/IPK Tertinggi Teknik Informatika - Gasal 2024_2025_page-0001.jpg" data-sem="Semester 5" data-term="Gasal 2024/2025" aria-label="Piagam IPK tertinggi semester 5"><img src="sertifikat/IPK Tertinggi Teknik Informatika - Gasal 2024_2025_page-0001.jpg" alt="Piagam IPK tertinggi semester 5" loading="lazy"><span>Sem 5</span></button>
-                        <button class="pg-th a u" style="--i:7" data-src="sertifikat/IPK Tertinggi Teknik Informatika - Genap 2024_2025_page-0001.jpg" data-sem="Semester 6" data-term="Genap 2024/2025" aria-label="Piagam IPK tertinggi semester 6"><img src="sertifikat/IPK Tertinggi Teknik Informatika - Genap 2024_2025_page-0001.jpg" alt="Piagam IPK tertinggi semester 6" loading="lazy"><span>Sem 6</span></button>
-                        <button class="pg-th a u" style="--i:8" data-src="sertifikat/IPK Tertinggi Teknik Informatika - Genap 2025_2026_page-0001.jpg" data-sem="Semester 8" data-term="Genap 2025/2026" aria-label="Piagam IPK tertinggi semester 8"><img src="sertifikat/IPK Tertinggi Teknik Informatika - Genap 2025_2026_page-0001.jpg" alt="Piagam IPK tertinggi semester 8" loading="lazy"><span>Sem 8</span></button>
-                    </div>
-                </div>
-                <p class="cert-note a u" style="--i:9">✦ Piagam semester 4 dan 7 tidak tersedia dalam bentuk arsip. Capaian IPK tertinggi pada kedua semester tersebut dapat diverifikasi melalui transkrip nilai.</p>
-            </div>
-        </section>
-
-        <!-- 10 Lulusan Terbaik -->
-        <section class="s dk" data-d="9" data-nav="Graduation" aria-label="Lulusan Terbaik">
-            <div class="in">
-                <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
-                    <h2 class="t a w" style="--i:0;margin:0">Lulusan Terbaik</h2>
-                    <div class="sp a z" style="--i:1"></div>
-                </div>
-                <p class="gr-sub a u" style="--i:2;margin-top:.8rem">Wisuda S1 Teknik Informatika · <b>Semester Genap 2025/2026</b></p>
-                <div class="gr-grid">
-                    <div class="gr-cert a z" style="--i:3;--r:-1.5deg"><img src="sertifikat/Natalin Memory Ayu - Piagam Penghargaan Lulusan Terbaik Tingkat Universitas_page-0001.jpg" alt="Sertifikat lulusan terbaik program sarjana">
-                        <div class="gr-seal">Best<br>Graduate</div>
-                    </div>
-                    <figure class="gr-photo a z" style="--i:5;--r:3deg"><img src="WhatsApp Image 2026-10-30 at 13.28.55.jpeg" alt="Foto wisuda">
-                        <figcaption>Wisuda 2026</figcaption>
-                    </figure>
-                </div>
-            </div>
-        </section>
-
-        <!-- 11 Kontak -->
-        <section class="s lt cs" data-d="8" data-nav="Contact" aria-label="Kontak">
-            <div class="in">
-                <h2 class="t xl a w" style="--i:0;font-size:clamp(3.4rem,15vw,11rem)">Contact<br>Me</h2>
-                <div class="ct">
-                    <ul class="ci">
-                        <li class="a l" style="--i:2"><span class="ic">☎</span><a href="tel:+6282271629387">+62 822 7162 9387</a></li>
-                        <li class="a l" style="--i:3"><span class="ic">in</span><a href="#">Natalin Memory Ayu</a></li>
-                        <li class="a l" style="--i:4"><span class="ic">✉</span><a href="mailto:natalinayu897@mail.com">natalinayu897@mail.com</a></li>
-                        <li class="a u" style="--i:5"><button class="again" data-go="0">Putar ulang</button></li>
-                    </ul>
-                </div>
-                <div class="dash a x" style="--i:6;margin-top:1.5rem"></div>
-            </div>
-            <div class="deco" aria-hidden="true">
-                <i class="dc c1 a z" style="--i:2;--r:0deg"><b></b></i>
-                <i class="dc c3 a z" style="--i:4;--r:0deg"><b></b></i>
-                <i class="dc c4 a z" style="--i:5;--r:6deg"><b></b></i>
-                <i class="dc c2 a z" style="--i:6;--r:0deg"><b></b></i>
-                <i class="dc st c5 a z" style="--i:7;--r:0deg"><b>✦</b></i>
-                <i class="dc st c6 a z" style="--i:8;--r:0deg"><b>✦</b></i>
-                <i class="dc st c7 a z" style="--i:9;--r:0deg"><b>✦</b></i>
-            </div>
-        </section>
-    </main>
-
-    <div class="ctl">
-        <button id="prev" aria-label="Slide sebelumnya">‹</button>
-        <button id="play" aria-label="Jeda">❚❚</button>
-        <span id="count">1 / 11</span>
-        <button id="next" aria-label="Slide berikutnya">›</button>
+<div class="bar" id="bar" aria-label="Progres slide"></div>
+<main>
+<!-- 1 Cover -->
+<section class="s lt on" data-d="7" aria-label="Sampul">
+  <div class="in cv">
+    <p class="a k k1" style="--i:0">WELCOME TO</p>
+    <h1 class="t xl a w" style="--i:2">Portfolio</h1>
+    <div class="dlrow cvdl a u" style="--i:3"><button class="again pri" id="dlZip">⬇ Unduh Portofolio + SK (ZIP)</button><button class="again" id="dlPdf">Simpan sebagai PDF</button>
+      <p id="dlMsg" class="dlmsg" role="status"></p>
     </div>
+    <div class="ph cut a u" style="--i:5" role="img" aria-label="Foto profil"><img src="Foto1.png" alt=""></div>
+    <div class="cvb">
+      <div class="a l" style="--i:4"><p class="t">2026</p><div class="sp"></div></div>
+      <div class="nm a r" style="--i:4"><p class="t">Natalin Memory<br>Ayu</p><div class="dash"></div><div class="sp" style="justify-content:flex-end"></div></div>
+    </div>
+  </div>
+</section>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script>
-        (function() {
-            var S = [].slice.call(document.querySelectorAll('.s')),
-                N = S.length,
-                bar = document.getElementById('bar'),
-                play = document.getElementById('play'),
-                count = document.getElementById('count'),
-                cur = 0,
-                segs = [],
-                reduce = matchMedia('(prefers-reduced-motion: reduce)').matches,
-                paused = reduce;
-            var SV = '<svg viewBox="0 0 100 120" aria-hidden="true"><circle cx="50" cy="40" r="21"/><path d="M6 120c0-36 20-54 44-54s44 18 44 54z"/></svg>';
-            [].forEach.call(document.querySelectorAll('.sp'), function(e) {
-                e.innerHTML = '<i>✦</i><i>✦</i><i>✦</i><i>✦</i>'
-            });
-            [].forEach.call(document.querySelectorAll('.ph'), function(e) {
-                if (!e.querySelector('img')) e.innerHTML = SV
-            });
-            [].forEach.call(document.querySelectorAll('.tags,.chips,.bul'), function(g) {
-                [].forEach.call(g.children, function(c, i) {
-                    c.style.setProperty('--k', i)
-                })
-            });
-            S.forEach(function(s, i) {
-                var l = s.getAttribute('data-nav');
-                if (l) {
-                    var n = document.createElement('div'),
-                        last = i === N - 1;
-                    n.className = 'nv';
-                    n.innerHTML = '<button data-go="0">Home</button><b>' + l + '</b><button data-go="' + (last ? 1 : N - 1) + '">' + (last ? 'About me' : 'Contact') + '</button>';
-                    s.insertBefore(n, s.firstChild)
-                }
-                var g = document.createElement('div');
-                g.className = 'seg';
-                g.innerHTML = '<i></i>';
-                g.style.setProperty('--dur', (s.getAttribute('data-d') || 7) + 's');
-                bar.appendChild(g);
-                segs.push(g)
-            });
+<!-- 2 Tentang -->
+<section class="s dk" data-d="10" data-nav="About Me" aria-label="About Me">
+  <div class="in">
+    <h2 class="t a w" style="--i:0">Halo, saya Ayu</h2>
+    <div class="about-grid">
+      <div class="ph about-photo a z" style="--i:2;--r:-2deg" role="img" aria-label="Foto Ayu"><img src="Foto2.jpg" alt=""></div>
+      <div class="a r" style="--i:3">
+        <p class="just about">Lulusan S1 Teknik Informatika Universitas Kristen Indonesia Toraja yang terbiasa bekerja dengan komputer, mengembangkan sistem informasi, mengelola dokumen dan data, serta menjelaskan materi teknis kepada orang lain. Pengalaman sebagai asisten praktikum di mata kuliah program studi Teknik Informatika, kerja praktek di instansi pemerintah, dan pengajar pelatihan Google Workspace membentuk saya menjadi pribadi yang teliti dan bertanggung jawab. Ke depan, saya ingin berkarier di bidang web development, sistem informasi, pengelolaan data, atau administrasi digital, sambil terus belajar langsung di dunia kerja.</p>
+        <div class="chips a u" style="--i:5;margin-top:1.3rem"><span>Lulusan terbaik S1, semester genap 2025/2026</span><span>IPK tertinggi Program Studi Teknik Informatika selama 8 semester</span></div>
+        <div class="dash a x" style="--i:6;margin-top:1.4rem;margin-left:auto"></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-            function setPlay() {
-                document.body.classList.toggle('paused', paused);
-                play.textContent = paused ? '▶' : '❚❚';
-                play.setAttribute('aria-label', paused ? 'Putar' : 'Jeda')
-            }
+<!-- 3 Pendidikan -->
+<section class="s dk" data-d="9" data-nav="Education" aria-label="Pendidikan">
+  <div class="in">
+    <div class="ed-grid">
+      <div>
+        <p class="ed-lbl a u" style="--i:0">IPK</p>
+        <div class="ed-num a w" style="--i:1"><b>3,95</b><span>/4,00</span></div>
+        <p class="ed-cap a u" style="--i:3">Tertinggi di Program Studi Teknik Informatika selama 8 semester</p>
+        <div class="sp a z" style="--i:4"></div>
+      </div>
+      <div>
+        <div class="ed-uni a r" style="--i:2"><img class="ed-logo" src="uki.png" alt="Logo Universitas Kristen Indonesia Toraja">
+          <div><h2>Universitas Kristen Indonesia Toraja</h2><p>S1 Teknik Informatika</p></div>
+        </div>
+        <div class="ed-meta a r" style="--i:3">
+          <div><small>Periode</small><b>2022 – 2026</b></div>
+          <div><small>Peminatan</small><b>Enterprise System</b></div>
+        </div>
+        <div class="ed-card a r" style="--i:3"><small>Tugas akhir</small><p>Sistem Informasi Layanan Posyandu Berbasis Website untuk Monitoring Pertumbuhan dan Imunisasi Balita dengan Framework Laravel di Kelurahan Rante</p></div>
+        <div class="ed-badge a r" style="--i:4"><i>★</i><span>Lulusan terbaik program sarjana semester genap 2025/2026</span></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-            function render() {
-                S.forEach(function(s, i) {
-                    s.classList.toggle('on', i === cur);
-                    s.setAttribute('aria-hidden', i === cur ? 'false' : 'true');
-                    [].forEach.call(s.querySelectorAll('a,button'), function(e) {
-                        e.tabIndex = i === cur ? 0 : -1
-                    })
-                });
-                segs.forEach(function(g, i) {
-                    g.classList.remove('on', 'done');
-                    void g.offsetWidth;
-                    if (i < cur) g.classList.add('done');
-                    else if (i === cur) g.classList.add('on')
-                });
-                count.textContent = (cur + 1) + ' / ' + N;
-                S[cur].scrollTop = 0;
-                setPlay()
-            }
+<!-- 4 Skills -->
+<section class="s lt" data-d="9" data-nav="Skills" aria-label="Skills">
+  <div class="in">
+    <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap"><h2 class="t a w" style="--i:0;margin:0">Skills</h2><div class="sp a z" style="--i:1"></div></div>
+    <div class="sk-grid">
+      <div class="sk-card sk-main a u" style="--i:2"><h3>Hard skill</h3>
+        <div class="tags"><span>System Requirement Analysis</span><span>Web Development</span><span>Software Testing</span><span>Black Box Testing</span><span>UAT</span><span>Design UI/UX</span><span>Data Entry</span><span>Data Processing</span><span>Data Management</span><span>General Administration</span><span>Document Control</span><span>Document Preparation</span></div>
+      </div>
+      <div class="sk-card a u" style="--i:3"><h3>Soft skill</h3>
+        <div class="tags"><span>Problem Solving</span><span>Teamwork</span><span>Communication Skill</span><span>Time Management</span><span>Dependability</span><span>Attention to Detail</span><span>Active Listening</span></div>
+      </div>
+      <div class="sk-card sk-tools a u" style="--i:4"><h3>Tools</h3>
+        <div class="tags"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>PHP</span><span>Laravel</span><span>MySQL</span><span>Google Workspace</span><span>Google Docs</span><span>Google Sheets</span><span>Google Slides</span><span>Google Forms</span><span>Google Site</span><span>Microsoft Word</span><span>Microsoft Excel</span><span>Microsoft PowerPoint</span><span>Canva</span><span>Figma</span></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-            function go(i) {
-                cur = Math.max(0, Math.min(N - 1, i));
-                render()
-            }
-            bar.addEventListener('animationend', function(e) {
-                if (e.animationName !== 'fill' || paused) return;
-                if (cur < N - 1) go(cur + 1);
-                else {
-                    paused = true;
-                    setPlay()
-                }
-            });
-            document.addEventListener('click', function(e) {
-                var t = e.target.closest('[data-go]');
-                if (t) {
-                    if (+t.getAttribute('data-go') === 0) paused = false;
-                    go(+t.getAttribute('data-go'))
-                }
-            });
-            document.getElementById('next').onclick = function() {
-                go(cur + 1)
-            };
-            document.getElementById('prev').onclick = function() {
-                go(cur - 1)
-            };
-            play.onclick = function() {
-                paused = !paused;
-                setPlay()
-            };
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowRight' || e.key === 'PageDown') go(cur + 1);
-                else if (e.key === 'ArrowLeft' || e.key === 'PageUp') go(cur - 1);
-                else if (e.key === ' ' && !/^(BUTTON|A)$/.test(e.target.tagName)) {
-                    e.preventDefault();
-                    play.click()
-                }
-            });
-            var x0 = null,
-                y0 = null;
-            document.addEventListener('touchstart', function(e) {
-                x0 = e.touches[0].clientX;
-                y0 = e.touches[0].clientY
-            }, {
-                passive: true
-            });
-            document.addEventListener('touchend', function(e) {
-                if (x0 === null) return;
-                var dx = e.changedTouches[0].clientX - x0,
-                    dy = e.changedTouches[0].clientY - y0;
-                x0 = null;
-                if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) go(dx < 0 ? cur + 1 : cur - 1)
-            }, {
-                passive: true
-            });
-            /* galeri piagam */
-            (function() {
-                var sec = document.querySelector('[aria-label="Achievement"]'),
-                    main = document.getElementById('pgMain'),
-                    cap = document.getElementById('pgCap'),
-                    th = [].slice.call(sec.querySelectorAll('.pg-th')),
-                    idx = 0,
-                    manual = false;
+<!-- 5 Kerja Praktek -->
+<section class="s dk" data-d="9" data-nav="Experience" aria-label="Kerja praktek">
+  <div class="in">
+    <div class="kp-head">
+      <h2 class="t a w" style="--i:0;margin:0">Kerja Praktek</h2>
+      <div class="kp-org a r" style="--i:2"><h3>Sekretariat Daerah Tana Toraja</h3><p>Bagian Umum</p></div>
+    </div>
+    <div class="dash a x" style="--i:1"></div>
+    <div class="kp-main">
+      <div class="kp-cert a z" style="--i:2;--r:-2deg"><img src="kp/SERTIFIKAT-KP.jpeg" alt="Sertifikat kerja praktek"></div>
+      <div class="kp-list">
+        <div class="kp-card a u" style="--i:3"><b>01</b><p>Melakukan input dan validasi data administrasi pegawai (KGB, DPCP, SKP)</p></div>
+        <div class="kp-card a u" style="--i:4"><b>02</b><p>Menyusun, mengetik, dan mengarsipkan surat</p></div>
+        <div class="kp-card a u" style="--i:5"><b>03</b><p>Mengelola dan mengarsipkan surat masuk dan surat keluar dalam bentuk fisik dan digital</p></div>
+        <div class="kp-card a u" style="--i:6"><b>04</b><p>Mencatat dan mengarsipkan data keuangan (kwitansi pengeluaran)</p></div>
+      </div>
+    </div>
+    <div class="kq-photos">
+      <figure class="kq a z" style="--i:5;--r:-4deg"><div class="kq-img"><img src="kp/KP1.jpg" alt="Dokumentasi kerja praktek 1"></div><i class="kq-star">✦</i></figure>
+      <figure class="kq a z" style="--i:6;--r:3deg"><div class="kq-img"><img src="kp/KP2.jpg" alt="Dokumentasi kerja praktek 2"></div></figure>
+      <figure class="kq a z" style="--i:7;--r:-2deg"><div class="kq-img"><img src="kp/KP3.jpg" alt="Dokumentasi kerja praktek 3"></div></figure>
+      <figure class="kq a z" style="--i:8;--r:4deg"><div class="kq-img"><img src="kp/KP4.jpg" alt="Dokumentasi kerja praktek 4"></div><i class="kq-star">✦</i></figure>
+    </div>
+  </div>
+</section>
 
-                function show(i) {
-                    idx = i;
-                    var t = th[i];
-                    th.forEach(function(e, k) {
-                        e.classList.toggle('on', k === i)
-                    });
-                    main.classList.add('fade');
-                    setTimeout(function() {
-                        main.src = t.dataset.src;
-                        main.alt = t.getAttribute('aria-label');
-                        cap.innerHTML = 'IPK Tertinggi · ' + t.dataset.sem + '<small>' + t.dataset.term + '</small>';
-                        main.classList.remove('fade')
-                    }, 250)
-                }
-                th.forEach(function(t, i) {
-                    t.addEventListener('click', function() {
-                        manual = true;
-                        show(i)
-                    })
-                });
-                setInterval(function() {
-                    if (manual || !sec.classList.contains('on') || document.body.classList.contains('paused')) return;
-                    show((idx + 1) % th.length)
-                }, 2400)
-            })();
-            /* hitung naik IPK */
-            (function() {
-                var b = document.querySelector('.ed-num b'),
-                    sec = b.closest('.s'),
-                    raf, t0;
+<!-- 6 Asisten Laboratorium -->
+<section class="s lt" data-d="12" data-nav="Experience" aria-label="Asisten Laboratorium">
+  <div class="in">
+    <div class="al-head">
+      <h2 class="t a w" style="--i:0;margin:0">Asisten Laboratorium</h2>
+      <p class="al-desc a r" style="--i:2">Menjelaskan materi praktikum, mendampingi mahasiswa yang mengalami kesulitan, serta memeriksa laporan dan memberi penilaian.</p>
+    </div>
+    <div class="dash a x" style="--i:1"></div>
+    <div class="al-cards">
+      <div class="al-card a u" style="--i:2"><div class="al-top"><small>Semester</small><b>6</b></div><h3>Pemrograman Web</h3><a class="al-sk" href="New folder/NATALIN MEMORY AYU - PENETAPAN ASISTEN LABORATAORIUM GENAP 2024_2025.pdf" target="_blank" rel="noopener">Lihat SK (PDF)</a></div>
+      <div class="al-card a u" style="--i:3"><div class="al-top"><small>Semester</small><b>7</b></div><h3>Pemrograman Berorientasi Objek</h3><a class="al-sk" href="New folder/NATALIN MEMORY AYU - PENETAPAN ASISTEN LABORATAORIUM GANJIL 2025_2026.pdf" target="_blank" rel="noopener">Lihat SK (PDF)</a></div>
+      <div class="al-card a u" style="--i:4"><div class="al-top"><small>Semester</small><b>8</b></div><h3>Pemrograman Berbasis Kerangka Kerja (Laravel)</h3><a class="al-sk" href="New folder/NATALIN MEMORY AYU - PENETAPAN ASISTEN LABORATAORIUM_GENAP 2025_2026.pdf" target="_blank" rel="noopener">Lihat SK (PDF)</a></div>
+    </div>
+    <div class="al-bottom">
+      <div class="al-cert a z" style="--i:5;--r:-2deg"><img src="New folder/Sertifikat Teknik Informatika 222611008 NATALIN MEMORY AYU (1)_page-0001.jpg" alt="Sertifikat asisten laboratorium"></div>
+      <div class="al-photos">
+        <figure class="kq a z" style="--i:6;--r:-3deg"><div class="kq-img"><img src="New folder/aslab1.jpeg" alt="Dokumentasi asisten laboratorium 1"></div><i class="kq-star">✦</i></figure>
+        <figure class="kq a z" style="--i:7;--r:3deg"><div class="kq-img"><img src="New folder/aslab2.jpeg" alt="Dokumentasi asisten laboratorium 2"></div></figure>
+        <figure class="kq a z" style="--i:8;--r:-2deg"><div class="kq-img"><img src="New folder/aslab3.jpeg" alt="Dokumentasi asisten laboratorium 3"></div></figure>
+        <figure class="kq a z" style="--i:9;--r:4deg"><div class="kq-img"><img src="New folder/aslab4.jpeg" alt="Dokumentasi asisten laboratorium 4"></div><i class="kq-star">✦</i></figure>
+      </div>
+    </div>
+  </div>
+</section>
 
-                function f(t) {
-                    if (!t0) t0 = t;
-                    var p = Math.min(Math.max((t - t0 - 600) / 1500, 0), 1),
-                        e = 1 - Math.pow(1 - p, 3);
-                    b.textContent = (3.95 * e).toFixed(2).replace('.', ',');
-                    if (p < 1) raf = requestAnimationFrame(f)
-                }
-                new MutationObserver(function() {
-                    cancelAnimationFrame(raf);
-                    if (sec.classList.contains('on') && !reduce) {
-                        t0 = null;
-                        b.textContent = '0,00';
-                        raf = requestAnimationFrame(f)
-                    } else b.textContent = '3,95'
-                }).observe(sec, {
-                    attributes: true,
-                    attributeFilter: ['class']
-                })
-            })();
-            /* unduh ZIP (portofolio + SK) dan simpan PDF */
-            (function() {
-                var FILES = [{
-                        url: 'Portfolio-Natalin-Memory-Ayu.pdf',
-                        name: 'Portfolio - Natalin Memory Ayu.pdf'
-                    }, {
-                        url: 'New folder/NATALIN MEMORY AYU - PENETAPAN ASISTEN LABORATAORIUM GENAP 2024_2025.pdf',
-                        name: 'SK Asisten Lab - Pemrograman Web (Genap 2024-2025).pdf'
-                    }, {
-                        url: 'New folder/NATALIN MEMORY AYU - PENETAPAN ASISTEN LABORATAORIUM GANJIL 2025_2026.pdf',
-                        name: 'SK Asisten Lab - Pemrograman Berorientasi Objek (Ganjil 2025-2026).pdf'
-                    }, {
-                        url: 'New folder/NATALIN MEMORY AYU - PENETAPAN ASISTEN LABORATAORIUM_GENAP 2025_2026.pdf',
-                        name: 'SK Asisten Lab - Pemrograman Laravel (Genap 2025-2026).pdf'
-                    }],
-                    btn = document.getElementById('dlZip'),
-                    pdf = document.getElementById('dlPdf'),
-                    msg = document.getElementById('dlMsg');
+<!-- 7 Pelatihan -->
+<section class="s dk" data-d="12" data-nav="Experience" aria-label="Pelatihan Digital Office">
+  <div class="in">
+    <h2 class="t a w" style="--i:0;margin-bottom:.3rem">Pengajar Pelatihan</h2>
+    <div class="dash a x" style="--i:1"></div>
+    <div class="xp-grid">
+      <div>
+        <h3 class="a r" style="--i:2;font-size:clamp(1.2rem,2.6vw,1.7rem)">Instruktur Administrasi Perkantoran Berbasis Google Workspace</h3>
+        <p class="sub a r" style="--i:3;margin-bottom:.9rem">PKBM Arrang Kameloan · Program Kemnaker</p>
+        <div class="xp-meta a u" style="--i:4"><span>September - Oktober 2026</span><span>Tallulolo, Kesu, Toraja Utara</span></div>
+        <p class="a u" style="--i:5;font-size:1rem;line-height:1.55;margin:1rem 0 .7rem">Ditugaskan PKBM Arrang Kameloan untuk mengajar pelatihan Administrasi Perkantoran berbasis Google Workspace.</p>
+        <ul class="bul">
+          <li>Mengajarkan cara mengoperasikan Google Docs, Sheets, Slides, Drive, dan Forms.</li>
+          <li>Melatih peserta membuat surat resmi, mencatat dan mengarsipkan surat masuk dan keluar, serta mengelola petty cash.</li>
+          <li>Mendampingi peserta yang mengalami kesulitan sampai mereka bisa mengikuti materi.</li>
+        </ul>
+        <div class="tags a u" style="--i:7;margin-top:.9rem"><span>Google Docs</span><span>Sheets</span><span>Slides</span><span>Drive</span><span>Forms</span></div>
+      </div>
+      <div class="collage">
+        <div class="pic ph a z" style="--i:3;--r:-3deg"><img src="kursus/WhatsApp Image 2026-10-30 at 13.29.03.jpeg" alt="Dokumentasi pelatihan 1"></div>
+        <div class="pic ph a z" style="--i:4;--r:3deg"><img src="kursus/WhatsApp Image 2026-10-30 at 13.29.00.jpeg" alt="Dokumentasi pelatihan 2"></div>
+        <div class="cert-frame a z" style="--i:5;--r:-1deg"><img src="ks1.jpeg" alt="Dokumentasi pelatihan 3"></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-                function say(t) {
-                    msg.textContent = t
-                }
-                pdf.onclick = function() {
-                    say('Di jendela cetak, pilih "Simpan sebagai PDF" dan aktifkan "Grafik latar belakang".');
-                    setTimeout(function() {
-                        window.print()
-                    }, 300)
-                };
-                btn.onclick = function() {
-                    if (location.protocol === 'file:' || typeof JSZip === 'undefined') {
-                        say('Unduh ZIP hanya jalan jika website sudah di-hosting (bukan dibuka langsung dari folder) dan terhubung internet.');
-                        return
-                    }
-                    btn.disabled = true;
-                    say('Menyiapkan file…');
-                    var zip = new JSZip(),
-                        missing = [];
-                    Promise.all(FILES.map(function(f) {
-                        return fetch(encodeURI(f.url)).then(function(r) {
-                            if (!r.ok) throw 0;
-                            return r.blob()
-                        }).then(function(b) {
-                            zip.file(f.name, b)
-                        }).catch(function() {
-                            missing.push(f.name)
-                        })
-                    })).then(function() {
-                        if (missing.length === FILES.length) throw new Error('none');
-                        return zip.generateAsync({
-                            type: 'blob'
-                        })
-                    }).then(function(blob) {
-                        var a = document.createElement('a');
-                        a.href = URL.createObjectURL(blob);
-                        a.download = 'Portfolio Natalin Memory Ayu.zip';
-                        document.body.appendChild(a);
-                        a.click();
-                        a.remove();
-                        setTimeout(function() {
-                            URL.revokeObjectURL(a.href)
-                        }, 4000);
-                        say(missing.length ? 'ZIP terunduh, tetapi ada file yang tidak ditemukan: ' + missing.join(', ') : 'ZIP berhasil diunduh.')
-                    }).catch(function() {
-                        say('Gagal menyiapkan ZIP. Pastikan file PDF ada di folder yang benar.')
-                    }).then(function() {
-                        btn.disabled = false
-                    })
-                }
-            })();
-            render();
-        })();
-    </script>
+<!-- 8 Piagam Penghargaan -->
+<section class="s lt" data-d="16" data-nav="Achievement" aria-label="Achievement">
+  <div class="in">
+    <div class="pg-head"><h2 class="t a w" style="--i:0">Piagam Penghargaan</h2><span class="pg-badge a u" style="--i:1">IPK tertinggi Prodi Teknik Informatika angkatan 2022 · 8 semester</span></div>
+    <div class="pg-wrap">
+      <figure class="pg-stage a z" style="--i:2;--r:-1deg">
+        <div class="pg-frame"><img id="pgMain" src="sertifikat/IPK Tertinggi Teknik Informatika - Gasal 2022_2023_page-0001.jpg" alt="Piagam IPK tertinggi semester 1"></div>
+        <figcaption class="pg-cap" id="pgCap">IPK Tertinggi · Semester 1<small>Gasal 2022/2023</small></figcaption>
+      </figure>
+      <div class="pg-thumbs">
+        <button class="pg-th on a u" style="--i:3" data-src="sertifikat/IPK Tertinggi Teknik Informatika - Gasal 2022_2023_page-0001.jpg" data-sem="Semester 1" data-term="Gasal 2022/2023" aria-label="Piagam IPK tertinggi semester 1"><img src="sertifikat/IPK Tertinggi Teknik Informatika - Gasal 2022_2023_page-0001.jpg" alt="Piagam IPK tertinggi semester 1" loading="lazy"><span>Sem 1</span></button>
+        <button class="pg-th a u" style="--i:4" data-src="sertifikat/IPK Tertinggi Teknik Informatika - Genap 2022_2023_page-0001.jpg" data-sem="Semester 2" data-term="Genap 2022/2023" aria-label="Piagam IPK tertinggi semester 2"><img src="sertifikat/IPK Tertinggi Teknik Informatika - Genap 2022_2023_page-0001.jpg" alt="Piagam IPK tertinggi semester 2" loading="lazy"><span>Sem 2</span></button>
+        <button class="pg-th a u" style="--i:5" data-src="sertifikat/IPK Tertinggi Teknik Informatika - Gasal 2023_2024_page-0001.jpg" data-sem="Semester 3" data-term="Gasal 2023/2024" aria-label="Piagam IPK tertinggi semester 3"><img src="sertifikat/IPK Tertinggi Teknik Informatika - Gasal 2023_2024_page-0001.jpg" alt="Piagam IPK tertinggi semester 3" loading="lazy"><span>Sem 3</span></button>
+        <button class="pg-th a u" style="--i:6" data-src="sertifikat/IPK Tertinggi Teknik Informatika - Gasal 2024_2025_page-0001.jpg" data-sem="Semester 5" data-term="Gasal 2024/2025" aria-label="Piagam IPK tertinggi semester 5"><img src="sertifikat/IPK Tertinggi Teknik Informatika - Gasal 2024_2025_page-0001.jpg" alt="Piagam IPK tertinggi semester 5" loading="lazy"><span>Sem 5</span></button>
+        <button class="pg-th a u" style="--i:7" data-src="sertifikat/IPK Tertinggi Teknik Informatika - Genap 2024_2025_page-0001.jpg" data-sem="Semester 6" data-term="Genap 2024/2025" aria-label="Piagam IPK tertinggi semester 6"><img src="sertifikat/IPK Tertinggi Teknik Informatika - Genap 2024_2025_page-0001.jpg" alt="Piagam IPK tertinggi semester 6" loading="lazy"><span>Sem 6</span></button>
+        <button class="pg-th a u" style="--i:8" data-src="sertifikat/IPK Tertinggi Teknik Informatika - Genap 2025_2026_page-0001.jpg" data-sem="Semester 8" data-term="Genap 2025/2026" aria-label="Piagam IPK tertinggi semester 8"><img src="sertifikat/IPK Tertinggi Teknik Informatika - Genap 2025_2026_page-0001.jpg" alt="Piagam IPK tertinggi semester 8" loading="lazy"><span>Sem 8</span></button>
+      </div>
+    </div>
+    <p class="cert-note a u" style="--i:9">✦ Piagam semester 4 dan 7 tidak tersedia dalam bentuk arsip. Capaian IPK tertinggi pada kedua semester tersebut dapat diverifikasi melalui transkrip nilai.</p>
+  </div>
+</section>
+
+<!-- 9 Lulusan Terbaik -->
+<section class="s dk" data-d="9" data-nav="Graduation" aria-label="Lulusan Terbaik">
+  <div class="in">
+    <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap"><h2 class="t a w" style="--i:0;margin:0">Lulusan Terbaik</h2><div class="sp a z" style="--i:1"></div></div>
+    <p class="gr-sub a u" style="--i:2;margin-top:.8rem">Wisuda S1 Teknik Informatika · <b>Semester Genap 2025/2026</b></p>
+    <div class="gr-grid">
+      <div class="gr-cert a z" style="--i:3;--r:-1.5deg"><img src="sertifikat/Natalin Memory Ayu - Piagam Penghargaan Lulusan Terbaik Tingkat Universitas_page-0001.jpg" alt="Sertifikat lulusan terbaik program sarjana"><div class="gr-seal">Best<br>Graduate</div></div>
+      <figure class="gr-photo a z" style="--i:5;--r:3deg"><img src="WhatsApp Image 2026-10-30 at 13.28.55.jpeg" alt="Foto wisuda"><figcaption>Wisuda 2026</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 10 Kontak -->
+<section class="s lt cs" data-d="8" data-nav="Contact" aria-label="Kontak">
+  <div class="in">
+    <h2 class="t xl a w" style="--i:0;font-size:clamp(3.4rem,15vw,11rem)">Contact<br>Me</h2>
+    <div class="ct">
+      <ul class="ci">
+        <li class="a l" style="--i:2"><span class="ic">☎</span><a href="tel:+6282271629387">+62 822 7162 9387</a></li>
+        <li class="a l" style="--i:3"><span class="ic">in</span><a href="#">Natalin Memory Ayu</a></li>
+        <li class="a l" style="--i:4"><span class="ic">✉</span><a href="mailto:natalinayu897@mail.com">natalinayu897@mail.com</a></li>
+        <li class="a u" style="--i:5"><button class="again" data-go="0">Putar ulang</button></li>
+      </ul>
+    </div>
+    <div class="dash a x" style="--i:6;margin-top:1.5rem"></div>
+  </div>
+  <div class="deco" aria-hidden="true">
+    <i class="dc c1 a z" style="--i:2;--r:0deg"><b></b></i>
+    <i class="dc c3 a z" style="--i:4;--r:0deg"><b></b></i>
+    <i class="dc c4 a z" style="--i:5;--r:6deg"><b></b></i>
+    <i class="dc c2 a z" style="--i:6;--r:0deg"><b></b></i>
+    <i class="dc st c5 a z" style="--i:7;--r:0deg"><b>✦</b></i>
+    <i class="dc st c6 a z" style="--i:8;--r:0deg"><b>✦</b></i>
+    <i class="dc st c7 a z" style="--i:9;--r:0deg"><b>✦</b></i>
+  </div>
+</section>
+</main>
+
+<div class="ctl">
+  <button id="prev" aria-label="Slide sebelumnya">‹</button>
+  <button id="play" aria-label="Jeda">❚❚</button>
+  <span id="count">1 / 10</span>
+  <button id="next" aria-label="Slide berikutnya">›</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+(function(){
+  var S=[].slice.call(document.querySelectorAll('.s')),N=S.length,
+      bar=document.getElementById('bar'),play=document.getElementById('play'),count=document.getElementById('count'),
+      cur=0,segs=[],reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,paused=reduce;
+  var SV='<svg viewBox="0 0 100 120" aria-hidden="true"><circle cx="50" cy="40" r="21"/><path d="M6 120c0-36 20-54 44-54s44 18 44 54z"/></svg>';
+  [].forEach.call(document.querySelectorAll('.sp'),function(e){e.innerHTML='<i>✦</i><i>✦</i><i>✦</i><i>✦</i>'});
+  [].forEach.call(document.querySelectorAll('.ph'),function(e){if(!e.querySelector('img'))e.innerHTML=SV});
+  [].forEach.call(document.querySelectorAll('.tags,.chips,.bul'),function(g){[].forEach.call(g.children,function(c,i){c.style.setProperty('--k',i)})});
+  S.forEach(function(s,i){
+    var l=s.getAttribute('data-nav');
+    if(l){
+      var n=document.createElement('div'),last=i===N-1;
+      n.className='nv';
+      n.innerHTML='<button data-go="0">Home</button><b>'+l+'</b><button data-go="'+(last?1:N-1)+'">'+(last?'About me':'Contact')+'</button>';
+      s.insertBefore(n,s.firstChild);
+    }
+    var g=document.createElement('div');
+    g.className='seg';g.innerHTML='<i></i>';
+    g.style.setProperty('--dur',(s.getAttribute('data-d')||7)+'s');
+    bar.appendChild(g);segs.push(g);
+  });
+  function setPlay(){
+    document.body.classList.toggle('paused',paused);
+    play.textContent=paused?'▶':'❚❚';
+    play.setAttribute('aria-label',paused?'Putar':'Jeda');
+  }
+  function render(){
+    S.forEach(function(s,i){
+      s.classList.toggle('on',i===cur);
+      s.setAttribute('aria-hidden',i===cur?'false':'true');
+      [].forEach.call(s.querySelectorAll('a,button'),function(e){e.tabIndex=i===cur?0:-1});
+    });
+    segs.forEach(function(g,i){
+      g.classList.remove('on','done');void g.offsetWidth;
+      if(i<cur)g.classList.add('done');else if(i===cur)g.classList.add('on');
+    });
+    count.textContent=(cur+1)+' / '+N;
+    S[cur].scrollTop=0;
+    setPlay();
+  }
+  function go(i){cur=Math.max(0,Math.min(N-1,i));render()}
+  bar.addEventListener('animationend',function(e){
+    if(e.animationName!=='fill'||paused)return;
+    if(cur<N-1)go(cur+1);else{paused=true;setPlay()}
+  });
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('[data-go]');
+    if(t){if(+t.getAttribute('data-go')===0)paused=false;go(+t.getAttribute('data-go'))}
+  });
+  document.getElementById('next').onclick=function(){go(cur+1)};
+  document.getElementById('prev').onclick=function(){go(cur-1)};
+  play.onclick=function(){paused=!paused;setPlay()};
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown')go(cur+1);
+    else if(e.key==='ArrowLeft'||e.key==='PageUp')go(cur-1);
+    else if(e.key===' '&&!/^(BUTTON|A)$/.test(e.target.tagName)){e.preventDefault();play.click()}
+  });
+  var x0=null,y0=null;
+  document.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(x0===null)return;
+    var dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;x0=null;
+    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)go(dx<0?cur+1:cur-1);
+  },{passive:true});
+
+  /* galeri piagam */
+  (function(){
+    var sec=document.querySelector('[aria-label="Achievement"]'),main=document.getElementById('pgMain'),cap=document.getElementById('pgCap'),
+        th=[].slice.call(sec.querySelectorAll('.pg-th')),idx=0,manual=false;
+    function show(i){
+      idx=i;var t=th[i];
+      th.forEach(function(e,k){e.classList.toggle('on',k===i)});
+      main.classList.add('fade');
+      setTimeout(function(){
+        main.src=t.dataset.src;main.alt=t.getAttribute('aria-label');
+        cap.innerHTML='IPK Tertinggi · '+t.dataset.sem+'<small>'+t.dataset.term+'</small>';
+        main.classList.remove('fade');
+      },250);
+    }
+    th.forEach(function(t,i){t.addEventListener('click',function(){manual=true;show(i)})});
+    setInterval(function(){
+      if(manual||!sec.classList.contains('on')||document.body.classList.contains('paused'))return;
+      show((idx+1)%th.length);
+    },2400);
+  })();
+
+  /* hitung naik IPK */
+  (function(){
+    var b=document.querySelector('.ed-num b'),sec=b.closest('.s'),raf,t0;
+    function f(t){
+      if(!t0)t0=t;
+      var p=Math.min(Math.max((t-t0-600)/1500,0),1),e=1-Math.pow(1-p,3);
+      b.textContent=(3.95*e).toFixed(2).replace('.',',');
+      if(p<1)raf=requestAnimationFrame(f);
+    }
+    new MutationObserver(function(){
+      cancelAnimationFrame(raf);
+      if(sec.classList.contains('on')&&!reduce){t0=null;b.textContent='0,00';raf=requestAnimationFrame(f)}
+      else b.textContent='3,95';
+    }).observe(sec,{attributes:true,attributeFilter:['class']});
+  })();
+
+  /* unduh ZIP (portofolio + SK) dan simpan PDF */
+  (function(){
+    var FILES=[
+      {url:'Portfolio-Natalin-Memory-Ayu.pdf',name:'Portfolio - Natalin Memory Ayu.pdf'},
+      {url:'New folder/NATALIN MEMORY AYU - PENETAPAN ASISTEN LABORATAORIUM GENAP 2024_2025.pdf',name:'SK Asisten Lab - Pemrograman Web (Genap 2024-2025).pdf'},
+      {url:'New folder/NATALIN MEMORY AYU - PENETAPAN ASISTEN LABORATAORIUM GANJIL 2025_2026.pdf',name:'SK Asisten Lab - Pemrograman Berorientasi Objek (Ganjil 2025-2026).pdf'},
+      {url:'New folder/NATALIN MEMORY AYU - PENETAPAN ASISTEN LABORATAORIUM_GENAP 2025_2026.pdf',name:'SK Asisten Lab - Pemrograman Laravel (Genap 2025-2026).pdf'}],
+      btn=document.getElementById('dlZip'),pdf=document.getElementById('dlPdf'),msg=document.getElementById('dlMsg');
+    function say(t){msg.textContent=t}
+    pdf.onclick=function(){
+      say('Di jendela cetak, pilih "Simpan sebagai PDF" dan aktifkan "Grafik latar belakang".');
+      setTimeout(function(){window.print()},300);
+    };
+    btn.onclick=function(){
+      if(location.protocol==='file:'||typeof JSZip==='undefined'){
+        say('Unduh ZIP hanya jalan jika website sudah di-hosting (bukan dibuka langsung dari folder) dan terhubung internet.');
+        return;
+      }
+      btn.disabled=true;say('Menyiapkan file…');
+      var zip=new JSZip(),missing=[];
+      Promise.all(FILES.map(function(f){
+        return fetch(encodeURI(f.url)).then(function(r){if(!r.ok)throw 0;return r.blob()}).then(function(b){zip.file(f.name,b)}).catch(function(){missing.push(f.name)});
+      })).then(function(){
+        if(missing.length===FILES.length)throw new Error('none');
+        return zip.generateAsync({type:'blob'});
+      }).then(function(blob){
+        var a=document.createElement('a');
+        a.href=URL.createObjectURL(blob);a.download='Portfolio Natalin Memory Ayu.zip';
+        document.body.appendChild(a);a.click();a.remove();
+        setTimeout(function(){URL.revokeObjectURL(a.href)},4000);
+        say(missing.length?'ZIP terunduh, tetapi ada file yang tidak ditemukan: '+missing.join(', '):'ZIP berhasil diunduh.');
+      }).catch(function(){
+        say('Gagal menyiapkan ZIP. Pastikan file PDF ada di folder yang benar.');
+      }).then(function(){btn.disabled=false});
+    };
+  })();
+
+  render();
+})();
+</script>
 </body>
-
-</html>m
+</html>
