@@ -1720,63 +1720,27 @@
         }
         /* cetak / simpan PDF: satu slide per halaman */
         
-        @media print {
-            @page {
-                size: A4 landscape;
-                margin: 0
-            }
-            * {
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact
-            }
-            html,
-            body {
-                height: auto;
-                overflow: visible;
-                background: none
-            }
-            .bar,
-            .ctl,
-            .dlrow,
-            .dlmsg {
-                display: none!important
-            }
-            .s {
-                position: relative;
-                inset: auto;
-                height: auto;
-                min-height: 210mm;
-                overflow: visible;
-                opacity: 1!important;
-                visibility: visible!important;
-                transform: none!important;
-                filter: none!important;
-                break-after: page;
-                page-break-after: always;
-                break-inside: avoid-page
-            }
-            .s,
-            .s * {
-                animation: none!important;
-                transition: none!important
-            }
-            .a,
-            .tags span,
-            .chips span,
-            .bul li {
-                opacity: 1!important
-            }
-            .in {
-                min-height: 210mm;
-                padding-top: 4.5rem;
-                padding-bottom: 2.5rem
-            }
-            .s:last-child {
-                break-after: auto;
-                page-break-after: auto
-            }
-        }
-        /* dekorasi slide kontak */
+/* ===== cetak / simpan PDF: tampilan sama seperti layar 1920x1080, 1 slide = 1 halaman ===== */
+@page{size:1920px 1080px;margin:0}
+@media print{
+*{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+html,body{height:auto;overflow:visible;background:#45101D}
+.bar,.ctl,.dlrow,.dlmsg{display:none!important}
+main{display:block}
+.s{position:relative;inset:auto;display:flex;width:1920px;height:1080px;overflow:hidden;opacity:1!important;visibility:visible!important;transform:none!important;filter:none!important;break-after:page;page-break-after:always;break-inside:avoid}
+.s:last-child{break-after:auto;page-break-after:auto}
+.s,.s *{animation:none!important;transition:none!important}
+.a,.tags span,.chips span,.bul li{opacity:1!important}
+.in{height:1080px;min-height:0;max-width:var(--mw)}
+.s[aria-label="Kerja praktek"] .in,.s[aria-label="Asisten Laboratorium"] .in{zoom:.8;height:calc(1080px / .8);justify-content:flex-start}
+.s[aria-label^="Pelatihan"] .in{zoom:.68;height:calc(1080px / .68);justify-content:flex-start}
+.pg-stage{display:none}
+.pg-wrap{grid-template-columns:1fr}
+.pg-thumbs{grid-template-columns:repeat(6,1fr);gap:1.2rem}
+.pg-th{padding:.4rem .4rem 1.8rem}
+.pg-th img{aspect-ratio:4/3;object-fit:contain;background:#EFE6D2}
+.pg-th.on{background:#F8F2E4;color:var(--wine);transform:none;box-shadow:.25rem .25rem 0 rgba(70,16,29,.35)}
+}        /* dekorasi slide kontak */
         
         .cs .in {
             z-index: 1
